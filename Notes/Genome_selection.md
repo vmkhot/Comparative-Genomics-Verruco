@@ -1,4 +1,6 @@
-In the case of Opitutales,
+For the genome selection, we started by inspecting the [GTDBTk outputted tree](../Results/gtdbtk.bac120.classify.tree.7.tree) for the Opitutales genome.
+
+Taxonomy n the case of Opitutales:
 
 **GTDB CLASSIFICATION**: (FAMILY LEVEL) d__Bacteria;p__Verrucomicrobiota;c__Verrucomicrobiae;o__Opitutales;f__T3Sed10-336;g__;s__
 
@@ -24,7 +26,7 @@ Picked 44 other genomes to compare with the Opitutales genome, including  all of
 
 1 genome came from the outgroup to root the tree later - include a couple more for the outgroup
 
-[[genomes_selected_tree.png]]
+[genomes_selected_tree](../Results/genomes_selected_tree.png)
 
 ## CheckM2
 
@@ -35,7 +37,7 @@ Have to test whether the genomes are complete using CheckM2
 checkm2 predict -t 30 -x fna --input ./genomes_1 --output-directory ./Checkm2_1
 ```
 
-[[checkm2 results.xlsx]]  
+[checkm2_results](../Results/checkm2%20results.xlsx)  
 Sheet 2 has checkm2 results from all the genomes. Only genomes > 90% completeness were selected for further analyses.
 
 ## FastANI

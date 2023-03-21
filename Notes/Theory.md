@@ -4,14 +4,10 @@ All the theory we learnt in class
 
 ## Week 1
 
----
-
 Reading?
 What is the problem?
 
 ## Week 2
-
----
 
 You're comparing proteins from different genomes
 
@@ -38,6 +34,7 @@ So proteins can be upto 80% different and still share the same function
 **Paralogs:** An homologous protein that has arisen in organism B but is not shared with the ancestor. A second copy of the gene that comes out because of HGT or duplication
 
 ### Practice
+
 |A|B|
 |---|---|
 |2000|2500|
@@ -46,7 +43,7 @@ How many homologues exist?
 This is a trick question! because there might be more than 1. So we are actually looking for families of homologs
 
 |homolog H1|
----
+|---|
 |A53|
 |A100|
 |A10004|
@@ -54,12 +51,14 @@ This is a trick question! because there might be more than 1. So we are actually
 
 So the fact that we find 3 homologues of H1 in organism A is suspect in our application. Our application is to figure out if the organism has gained or lost in genes in its adaptation.
 
-**To find homologues** we use BLAST using a concatenated database of organism A proteins and organism B proteins. 
+**To find homologues** we use BLAST using a concatenated database of organism A proteins and organism B proteins.
+
 ```bash
 cat A.fa B.fa > catAB.fa
 makeblastdb
 blastp catAB.fa catAB.fa
 ```
+
 Can also use DIAMOND for scaling up
 
 To cluster proteins, use MCL? (markov clustering). MCL clusters by the graph that is produced by blastp
@@ -89,7 +88,6 @@ Did FastANI between my genome and all other from Opitutae (1400+) genomes and no
 
 ## Week 3
 
----
 
 We need to create a heirarchy of cluters as the inner clusters have different levels of identity to each other.
 e.g. 50%: A-Mg, B-Mg, A-Ca, B-Ca --> 1 cluster --> this is the parent cluster --> **1 ortholog and 2 paralogs**
@@ -100,11 +98,9 @@ so the most ideal cluster for the above transporters is at 70%
 
 Need to carefully choose which genomes to cluster with target genome
 
-[[Genome_selection]]
+[Genome_selection](./Genome_selection.md)
 
 ## Week 4
-
----
 
 What's next?
 what's missing?
@@ -122,7 +118,7 @@ tree_of_mags script:
 
 Run CheckM2 to see the completeness of all the genomes/MAGs we are going to use.
 
- #MCL #Clustering [[Trial_w_2genomes]]
+ #MCL #Clustering [Trial](./Trial_w_2genomes.md)
 
 MCL can also cluster gene-expression data (transcriptomes and proteomes)
 
@@ -176,8 +172,6 @@ rooting information from phylogenetic discord between gene trees and the species
 
 ## Week 5
 
----
-
 - Need to download metaerg 2.0
 - Run genomes/MAGs through Metaerg2
 - update tree-of-mags script
@@ -191,7 +185,7 @@ rooting information from phylogenetic discord between gene trees and the species
 
 ### Annotation
 
- #annotation #metaerg   
+ #annotation #metaerg  
  Where does annotation go wrong?
 
 #### Gene prediction
@@ -217,12 +211,8 @@ Metaerg is run on the DNA files
 
 ## Week 6
 
----
-
 - run CheckM2 on all genomes
 - ALE protocol - amalgamated likelihood expectation? protocol. From Environmental Microbial Evolution
-
-
 
 ### Substitution models
 
@@ -249,11 +239,10 @@ For next week:
 - IQtree fastbootstrap - how long does it take? use the time option on the command line?
 
 Things to do:
+
 1. Run metaerg again on all folders
-2. move all the .faa files into one folder.
 2. update tree_of_mags and orthologues again
 3. Run species tree again with PROTGAMMALG in RAXML
 4. Inspect tree
 5. Find out about genomes in the sister clade (DAMON??)
 6. Run Orthologues script with --minimum_representation argument
-
