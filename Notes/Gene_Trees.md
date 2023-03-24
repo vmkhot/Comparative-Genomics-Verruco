@@ -84,6 +84,9 @@ mv ../orthologs/clustalo_out/101_MSA.fa  ../orthologs/clustalo_out/small_cluster
 
 ## Run IQtree
 
+#iqtree #substitutionmodel #trees  
+The following command does approximately this: take each gene cluster > find the best substitution model > start with a random tree with best fit model > generate this 10,000 times (stored in .ufboot) > the type of tree that is generated the most often is a consensus tree (stored in .contree) > take the log likelihood of this consensus tree > produce maximum likelihood tree (stored in .treefile)
+
 ```bash
 #!/bin/bash
 #SBATCH --job-name=iqtree           # Job name
@@ -104,5 +107,34 @@ conda activate iqtree
 #modelfinder
 #iqtree2 -s ../orthologs/clustalo_out/1300_MSA.fa -m MF -redo
 
-iqtree2 -s ../orthologs/clustalo_out/ -m MFP -madd LG+C20,LG+C60 –score-diff ALL -B 10000 -wbtl --seqtype AA -T 30
+
+# need to run iqtree as a loop. giving it the whole directory doesn't work in "-s".
+# I created and ram 9 slurm scripts. There is also an MPI option but requires a diff compilation
+
+# -MFP: run model finder and use that to make tree
+# -madd LG+C20,LG+C60: mixed models, LG is general amino acid subs model
+# -B 10000: 10,000 bootstraps
+# -T, --mem: thread and memory constraints on the program. have to give memory option, otherwise it will time-out
+for fn in ../orthologs/clustalo_out/1*_MSA.fa;
+do
+    iqtree2 -s $fn -m MFP -madd LG+C20,LG+C60 -B 10000 -wbtl -T 40 --mem 100G
+done
 ```
+
+After running this program, you will get the following files in your alignments folder.  
+|File|Description|
+|-|-|
+0_MSA.fa|original alignment
+0_MSA.fa.bionj|rapid neighbour joining tree
+0_MSA.fa.ckp.gz|
+0_MSA.fa.contree| consensus tree
+0_MSA.fa.iqtree| iqtree report
+0_MSA.fa.log| log file
+0_MSA.fa.mldist| maximum likelihood distances
+0_MSA.fa.model.gz| model fitting results
+0_MSA.fa.splits.nex|
+0_MSA.fa.treefile| maximum likelihood tree (best consensus maximum likelihood gene tree)
+0_MSA.fa.ufboot| 10,000 bootstrapped trees (to be used later)
+
+Next we use the bootstrapped trees (.ufboot) and the [species tree](./species_tree.md) to do the [gene tree-species tree reconciliation](./Gene-tree-species-tree-reconcile.md)
+

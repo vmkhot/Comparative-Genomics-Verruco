@@ -23,7 +23,7 @@ Protein sequences in biofinformatics are long words of amino acids
 
 Proteins in reality have 3D structure, an active site and a shape (particular fold)
 
-Some amino acids are more important than others in the sequence to maintain the same activity, folding and structure (i.e maintaining function). 
+Some amino acids are more important than others in the sequence to maintain the same activity, folding and structure (i.e maintaining function).
 
 So proteins can be upto 80% different and still share the same function
 
@@ -246,3 +246,16 @@ Things to do:
 4. Inspect tree
 5. Find out about genomes in the sister clade (DAMON??)
 6. Run Orthologues script with --minimum_representation argument
+
+## Week 8
+
+Check if the command "parallel" can be used with IQTREE?
+
+What are the next steps? Convert all the ufboots to ALEobjects.  
+Rooting:  
+Next we try to root the species tree using likelihood (step 3.7 in the textbook). How? Set the root at some hypothetical locations and the ALE script estimates the likelihood of each root.  
+How?: by drawing genes trees into the species tree - which one is correct? one method is parsimony - the least number of duplication and transfer events. Another is probabilistic methods - what is this? Reading for next week.
+
+inferring gene content:  
+inferring gene content at each position in the tree {gene loss, gain, duplication and transfer}
+
