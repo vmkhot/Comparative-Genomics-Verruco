@@ -139,7 +139,6 @@ what are the next steps? After picking the best clusters, you will have groups o
 
 Then you can ask similar questions about other genes by constructing gene trees from the ortholog groups
 
-
 ### Chapter 9 from Environmental Microbial Evolution
  #trees #rootingtrees
 

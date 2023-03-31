@@ -121,6 +121,7 @@ do
 done
 ```
 
+Larger gene clusters will take longer. 
 After running this program, you will get the following files in your alignments folder.  
 |File|Description|
 |-|-|

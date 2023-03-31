@@ -1,3 +1,5 @@
+# Genome Selection
+
 For the genome selection, we started by inspecting the [GTDBTk outputted tree](../Results/gtdbtk.bac120.classify.tree.7.tree) for the Opitutales genome.
 
 Taxonomy n the case of Opitutales:
