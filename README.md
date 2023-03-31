@@ -1,4 +1,8 @@
-# Workflow
+# Intro
+
+This is a work-in-progress repository
+
+## Workflow
 
 This is a general workflow for ancestral reconstruction with links/tags to more detailed sections
 
@@ -11,7 +15,6 @@ This is a general workflow for ancestral reconstruction with links/tags to more 
 3. [Species Tree](Notes/species_tree.md)
 
 4. Finding Orthologs
-
 
 5. IQtree fast bootstrap to produce [gene trees](Notes/Gene_Trees.md)
 

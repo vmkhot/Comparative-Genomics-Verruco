@@ -257,4 +257,3 @@ How?: by drawing genes trees into the species tree - which one is correct? one m
 
 inferring gene content:  
 inferring gene content at each position in the tree {gene loss, gain, duplication and transfer}
-

@@ -1,5 +1,5 @@
 # Species Tree
-
+#trees #species_tree #rootingtrees
 Using all 47 selected genomes [genome_selection](./Genome_selection.md) and their amino acid files produced by metaerg2.
 
 ## Run tree_of_mags script
@@ -91,6 +91,7 @@ pwd; hostname; date
 Resulting tree is [species_tree](../Results/tree2_concatenated_alignment.raxml.bestTree)
 
 ### Reroot the species tree
+#rootingtrees
 
 For the ALE reconciliation, we require >=3 rooted trees with different potential roots. To produce these there are 2 options:  
 
