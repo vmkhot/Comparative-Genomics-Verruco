@@ -6,7 +6,7 @@ Using all 47 selected genomes [genome_selection](./Genome_selection.md) and thei
 
 ### Download CompGenomics package
 
-Refer to [installation instructions](./species_tree.md#download-compgenomics-package)
+Refer to [installation instructions](species_tree.md#download-compgenomics-package)
 
 ### Run Orthologs
 
@@ -137,5 +137,5 @@ After running this program, you will get the following files in your alignments 
 0_MSA.fa.treefile| maximum likelihood tree (best consensus maximum likelihood gene tree)
 0_MSA.fa.ufboot| 10,000 bootstrapped trees (to be used later)
 
-Next we use the bootstrapped trees (.ufboot) and the [species tree](./species_tree.md) to do the [gene tree-species tree reconciliation](./Gene-tree-species-tree-reconcile.md)
+Next we use the bootstrapped trees (.ufboot) and the [rooted species tree](species_tree.md#reroot-the-species-tree) to do the [gene tree-species tree reconciliation](./Gene-tree-species-tree-reconcile.md)
 
