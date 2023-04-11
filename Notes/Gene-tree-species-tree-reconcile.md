@@ -95,7 +95,7 @@ Results are in [au_test_out](../Results/au_test_out.txt) - what do these mean?
 The roots are ranked by likelihood and p-value(au column). In this case  
 p < 0.05: throw it out  
 p > 0.05: cannot be rejected  
-*Does this mean that the null hypothesis is that the root is not likely?*
+*This means that the null hypothesis is that the root cannot be rejected*
 
 In our case, the highest ranked au is **root3: sodalake first**  
- So perhaps the organism transitioned from soda lake to marine and not the other way around.
+ So perhaps the organism transitioned from soda lake to marine and not the other way around. Midpoint root and Marine root could also not be rejected but freshwater and outgroup roots (both p < 0.05) are out.
