@@ -15,13 +15,15 @@ This is a general workflow for ancestral reconstruction with links/tags to more 
 3. [Species Tree](Notes/species_tree.md)
 
     1. Tree_of_mags
+        a. tree_of_mags uses conserved single copy marker gene HMMs - same as used gtdb ~ 50. e.g, rRNA, etc
     2. Run raxml (a bit time-consuming)
     3. Reroot the species tree
 
-4. Gene trees
+4. [Gene trees](./Notes/Gene_Trees.md)
 
-    1. Finding Orthologs
-    2. Run MSA
+    1. Finding [Orthologs](./Notes/Gene_Trees.md#run-orthologs) 
+        a. this is essentially a homology search. This script is going to produce 1000s of clusters of orthologs and paralogs
+    2. Run MSA [using clustalo](./Notes/Gene_Trees.md#create-msas)
     3. IQtree fast bootstrap to produce [gene trees](Notes/Gene_Trees.md)
     4. Convert everything into ALEobjects
 
