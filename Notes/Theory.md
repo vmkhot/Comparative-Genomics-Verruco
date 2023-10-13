@@ -266,3 +266,13 @@ Marc will find someone to explain to us all the phylogenetics stuff
 * Create production quality species tree
   * Require all the metadata annotated on there
   * Needs to be readable
+
+
+
+## Notes from Guillaume
+
+X2- trimming treating data
+
+Use phylobayes to run statistics
+and then posterior predictive tests
+
