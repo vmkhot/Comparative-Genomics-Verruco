@@ -41,6 +41,9 @@ git clone https://github.com/kinestetika/ComparativeGenomics.git
 cd ComparativeGenomics/
 python -m build
 
+# install the tar ball
+pip install --upgrade dist/comparative_genomics-0.13.tar.gz
+
 # install other dependencies into environment
 # famsa
 conda install bioconda::famsa
