@@ -27,6 +27,36 @@ python -m build
 pip install --upgrade dist/comparative_genomics-0.13.tar.gz
 ```
 
+NEW method to download and build the ComparativeGenomics package:
+
+```bash
+conda create -n CompGenomics
+
+conda activate
+
+# close the git repository
+git clone https://github.com/kinestetika/ComparativeGenomics.git
+
+# continue installation
+cd ComparativeGenomics/
+python -m build
+
+# install other dependencies into environment
+# famsa
+conda install bioconda::famsa
+
+#hmmer
+conda install bioconda::hmmer
+
+# bmge
+conda install bioconda::bmge
+
+# mmeqs2
+conda install bioconda::mmseqs2
+
+```
+
+
 To update, have to delete the `ComparativeGenomics` directory and redo installation from the git clone.
 
 ### Run tree_of_mags
