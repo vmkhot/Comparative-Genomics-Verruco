@@ -1,4 +1,4 @@
-# [[01 Genome Selection]]
+# 01 Genome Selection
 
 ## selecting genomes from the gtdb metadata file
 
@@ -176,7 +176,7 @@ with open ("genomes_to_download.csv", 'r') as accessions:
 
 ```
 
-# [02 Annotation, Orthologs, MSA and Gene Trees]()
+# 02 Annotation, Orthologs, MSA and Gene Trees
 ## metaerg
 
 metaerg in comparative analysis mode should give genome annotations + identify orthogroups 
