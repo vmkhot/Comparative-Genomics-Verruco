@@ -1,0 +1,589 @@
+<!DOCTYPE html>
+<html>
+<head>
+<style>
+body {
+  font-family: helvetica,serif;
+  font-size: 14px;
+}
+
+#cy {
+  width: 100%;
+  height: 100%;
+  position: absolute;
+  left: 0;
+  top: 0;
+  z-index: 10;
+  background-color: #FFFFFF;
+}
+
+h1 {
+  opacity: 0.5;
+  font-size: 1em;
+}
+
+.floating {
+    max-width: 30%;
+    width: 120px;
+    float: right;
+    position: absolute;
+    right: 10px;
+    top: 10px;
+    z-index: 100;
+    justify-content: center;
+    align-items: center;
+}
+
+.cy-button {
+    background-color: #555555;
+    border: none;
+    color: white;
+    padding: 6px 0px;
+    width: 100%;
+    text-align: center;
+    text-decoration: none;
+    display: inline-block;
+    font-size: 14px;
+    margin: 4px 2px;
+    cursor: pointer;
+    border-radius: 8px;
+    box-shadow: 0 4px 8px 0 rgba(0,0,0,0.2), 0 3px 10px 0 rgba(0,0,0,0.19);
+}
+
+a.cy-button:link, a.cy-button:visited, a.cy-button:hover {
+    color: white;
+    text-decoration: none;
+}
+
+
+.slidertext {
+    width: 100%;
+    color: #555555;
+    border: none;
+    text-align: center;
+    text-decoration: none;
+    display: inline-block;
+    font-size: 14px;
+    margin: 4px 2px;
+}
+
+.slider {
+    -webkit-appearance: none;
+    width: 100%;
+    height: 15px;
+    text-align: center;
+    border-radius: 5px;
+    background: #d3d3d3;
+    outline: none;
+    opacity: 0.7;
+    -webkit-transition: .2s;
+    transition: opacity .2s;
+    margin: 10px 0px;
+    display: inline-block;
+    box-shadow: 0 4px 8px 0 rgba(0,0,0,0.2), 0 3px 10px 0 rgba(0,0,0,0.19);
+}
+
+.slider::-webkit-slider-thumb {
+    -webkit-appearance: none;
+    appearance: none;
+    width: 25px;
+    height: 25px;
+    border-radius: 50%;
+    background: #555555;
+    cursor: pointer;
+}
+
+.slider::-moz-range-thumb {
+    width: 25px;
+    height: 25px;
+    border-radius: 50%;
+    background: #555555;
+    cursor: pointer;
+}
+
+@media all and (max-width: 600px) {
+    .buttontext {
+        display: none;
+    }
+}
+
+
+</style>
+<meta charset=utf-8 />
+<meta name="viewport" content="user-scalable=no, initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0, minimal-ui">
+<title>162ffa18-a4bd-4e8f-8c9e-a3983f0a0937.full</title>
+    
+    <script  type='text/javascript' src="https://pastml.pasteur.fr/static/js/jquery.min.js"></script>
+    
+    <script  type='text/javascript' src="https://pastml.pasteur.fr/static/js/jquery.qtip.min.js"></script>
+    
+    <script  type='text/javascript' src="https://pastml.pasteur.fr/static/js/cytoscape.min.js"></script>
+    
+    <script  type='text/javascript' src="https://pastml.pasteur.fr/static/js/cytoscape-qtip.js"></script>
+    
+    <script  type='text/javascript' src="https://pastml.pasteur.fr/static/js/cytoscape-svg.js"></script>
+    
+    <script  type='text/javascript' src="https://pastml.pasteur.fr/static/js/layout-base.min.js"></script>
+    
+    <script  type='text/javascript' src="https://pastml.pasteur.fr/static/js/cose-base.min.js"></script>
+    
+    <script  type='text/javascript' src="https://pastml.pasteur.fr/static/js/cytoscape-cose-bilkent.min.js"></script>
+    
+    
+    <link rel="stylesheet" type="text/css" href="https://pastml.pasteur.fr/static/css/jquery.qtip.min.css"/>
+    
+    <link rel="stylesheet" type="text/css" href="https://pastml.pasteur.fr/static/css/bootstrap.min.css"/>
+    
+<meta http-Equiv="Cache-Control" Content="no-cache" />
+<meta http-Equiv="Pragma" Content="no-cache" />
+<meta http-Equiv="Expires" Content="0" />
+</head>
+<body>
+<div id="fullscreenDiv">
+<div id="cy"></div>
+<div class="floating">
+    <a class="cy-button" href="#" id="fit" onclick="fit()">
+        <span class="glyphicon glyphicon-resize-full"></span><span class="buttontext">  Fit screen</span>
+    </a>
+    <a class="cy-button" href="#" id="reset" onclick="resetLayout()">
+        <span class="glyphicon glyphicon-picture"></span><span class="buttontext">  Restore layout</span>
+    </a>
+    <a class="cy-button" href="#" id="downloader" onclick="toImage()" download="162ffa18-a4bd-4e8f-8c9e-a3983f0a0937.full.jpg">
+        <span class="glyphicon glyphicon-save"></span><span class="buttontext">  Save (jpg)</span>
+    </a>
+    <a class="cy-button" href="#" id="downloader_svg" onclick="saveAsSvg()" download="162ffa18-a4bd-4e8f-8c9e-a3983f0a0937.full.svg">
+        <span class="glyphicon glyphicon-save"></span><span class="buttontext">  Save (svg)</span>
+    </a>
+    <a class="cy-button" href="#" id="fullscreen" onclick="toggleFullScreen()">
+        <span id="fsspan" class="glyphicon glyphicon-fullscreen"></span><span id="fstext" class="buttontext">  Full screen</span>
+    </a>
+    
+<div class="slidecontainer">
+  <input type="range" min="0" max="8" value="8" class="slider" id="myRange" step="1">
+  <div class="slidertext">dist. to root: <span id="demo"></span></div>
+</div>
+</div></div>
+<!-- Load appplication code at the end to ensure DOM is loaded -->
+<script type="text/javascript">var layoutOptions = {
+  name: 'preset',
+  positions: function(node){
+    node.position('x', node.data('node_x'));
+    node.position('y', node.data('node_y'));
+    return node.position();
+  },
+  fit: true, // whether to fit to viewport
+  padding: 1, // padding on fit
+};
+
+
+var cy = cytoscape({
+  container: document.getElementById('cy'),
+
+  style: cytoscape.stylesheet()
+    .selector('node')
+      .css({
+        'width': 300,
+        'height': 300,
+        'content': '',
+        'shape': 'barrel',
+        'pie-size': '100%',
+        'background-color': '#909090',
+        'color': '#383838',
+        'text-opacity': 1,
+        'text-valign': 'center',
+        'text-halign': 'center',
+        'font-size': 80,
+        'text-halign' : 'center',
+        'text-valign' : 'center',
+        'min-zoomed-font-size': 12,
+        'text-background-color' : '#ffffff',
+        'text-background-shape' : 'roundrectangle',
+        'text-background-opacity': .3,
+        'text-background-padding' : 1,
+      })
+    .selector('node[node_name]')
+      .css({
+        'content': 'data(node_name)',
+      })
+    .selector('node[tip]')
+      .css({
+        'width': 500,
+        'height': 500,
+        'font-size': 100,
+        'shape': 'ellipse',
+      })
+    .selector('node[unresolved]')
+      .css({
+        'shape': 'octagon',
+        'pie-size': '90%',
+        'width': 600,
+        'height': 600,
+        'font-size': 150,
+      })
+    .selector('node[fake]')
+      .css({
+        'shape': 'rectangle',
+        'width': 1,
+        'height': 1,
+        'text-opacity': 0,
+        'font-size': 1,
+        'text-background-opacity': 0,
+        'text-background-padding' : 0,
+        'opacity': 0,
+      })
+    .selector('node[hidden>0]')
+      .css({
+        'opacity': 0.1,
+        'width': 100,
+        'height': 100,
+      })
+    
+    .selector(".Freshwater")
+        .css({
+        
+                'pie-1-background-color': "#7fc97f",
+                'pie-1-background-size': '100.0\%',
+            
+        })
+    
+    .selector(".Freshwater-Gut")
+        .css({
+        
+                'pie-1-background-color': "#7fc97f",
+                'pie-1-background-size': '50.0\%',
+            
+                'pie-2-background-color': "#beaed4",
+                'pie-2-background-size': '50.0\%',
+            
+        })
+    
+    .selector(".Freshwater-Gut-HotSpring-Marine-SodaLake")
+        .css({
+        
+                'pie-1-background-color': "#7fc97f",
+                'pie-1-background-size': '20.0\%',
+            
+                'pie-2-background-color': "#beaed4",
+                'pie-2-background-size': '20.0\%',
+            
+                'pie-3-background-color': "#fdc086",
+                'pie-3-background-size': '20.0\%',
+            
+                'pie-4-background-color': "#ffff99",
+                'pie-4-background-size': '20.0\%',
+            
+                'pie-5-background-color': "#386cb0",
+                'pie-5-background-size': '20.0\%',
+            
+        })
+    
+    .selector(".Freshwater-Marine-SodaLake")
+        .css({
+        
+                'pie-1-background-color': "#7fc97f",
+                'pie-1-background-size': '33.33\%',
+            
+                'pie-2-background-color': "#ffff99",
+                'pie-2-background-size': '33.33\%',
+            
+                'pie-3-background-color': "#386cb0",
+                'pie-3-background-size': '33.33\%',
+            
+        })
+    
+    .selector(".Gut")
+        .css({
+        
+                'pie-1-background-color': "#beaed4",
+                'pie-1-background-size': '100.0\%',
+            
+        })
+    
+    .selector(".Gut-Marine-Soil")
+        .css({
+        
+                'pie-1-background-color': "#beaed4",
+                'pie-1-background-size': '33.33\%',
+            
+                'pie-2-background-color': "#ffff99",
+                'pie-2-background-size': '33.33\%',
+            
+                'pie-3-background-color': "#f0027f",
+                'pie-3-background-size': '33.33\%',
+            
+        })
+    
+    .selector(".HotSpring")
+        .css({
+        
+                'pie-1-background-color': "#fdc086",
+                'pie-1-background-size': '100.0\%',
+            
+        })
+    
+    .selector(".HotSpring-Marine")
+        .css({
+        
+                'pie-1-background-color': "#fdc086",
+                'pie-1-background-size': '50.0\%',
+            
+                'pie-2-background-color': "#ffff99",
+                'pie-2-background-size': '50.0\%',
+            
+        })
+    
+    .selector(".Marine")
+        .css({
+        
+                'pie-1-background-color': "#ffff99",
+                'pie-1-background-size': '100.0\%',
+            
+        })
+    
+    .selector(".Marine-SodaLake")
+        .css({
+        
+                'pie-1-background-color': "#ffff99",
+                'pie-1-background-size': '50.0\%',
+            
+                'pie-2-background-color': "#386cb0",
+                'pie-2-background-size': '50.0\%',
+            
+        })
+    
+    .selector(".Marine-Soil")
+        .css({
+        
+                'pie-1-background-color': "#ffff99",
+                'pie-1-background-size': '50.0\%',
+            
+                'pie-2-background-color': "#f0027f",
+                'pie-2-background-size': '50.0\%',
+            
+        })
+    
+    .selector(".SodaLake")
+        .css({
+        
+                'pie-1-background-color': "#386cb0",
+                'pie-1-background-size': '100.0\%',
+            
+        })
+    
+    .selector(".Soil")
+        .css({
+        
+                'pie-1-background-color': "#f0027f",
+                'pie-1-background-size': '100.0\%',
+            
+        })
+    
+    .selector('edge')
+      .css({
+        'width': 100,
+        'font-size': 100,
+        'color': 'black',
+        'content': '',
+        'curve-style': 'bezier',
+        'target-arrow-shape': 'triangle',
+        'target-arrow-color': '#909090',
+        'opacity': 1,
+        'text-opacity': 1,
+        'line-color': '#909090',
+        'text-background-color' : '#ffffff',
+        'text-background-shape' : 'roundrectangle',
+        'text-background-opacity': 1,
+        'text-background-padding' : 4,
+        'min-zoomed-font-size': 10,
+        'line-style': 'solid',
+        'line-dash-pattern': [200, 20],
+      })
+    .selector('edge[polytomy]')
+      .css({
+        'line-style': 'dashed',
+      })
+    .selector('edge[fake]')
+      .css({
+        'target-arrow-shape': 'none',
+      })
+    .selector('edge[edge_name]')
+      .css({
+        'content': 'data(edge_name)',
+      })
+    .selector('edge[edge_color]')
+      .css({
+        'target-arrow-color': 'data(edge_color)',
+        'line-color': 'data(edge_color)',
+        'width': 80,
+      })
+    .selector(':selected')
+      .css({
+        'background-color': 'black',
+        'line-color': 'black',
+        'target-arrow-color': 'black',
+        'source-arrow-color': 'black',
+        'pie-size': '60%',
+        'opacity': 1
+      })
+    .selector('.faded')
+      .css({
+        'opacity': 0.25,
+        'text-opacity': 0
+      }),
+
+  elements: {'nodes': [{'data': {'id': 'fake_node_0', 'fake': 1, 'node_x': 25097.314453125, 'node_y': 0.0}}, {'data': {'node_root_id': 'root', 'node_root_date': 0, 'node_name': 'root', 'mile': 0, 'id': 0, 'tooltip': 'character: Hot Spring', 'node_x': 25097.314453125, 'node_y': 0.0}, 'classes': 'HotSpring'}, {'data': {'id': 'fake_node_1', 'fake': 1, 'node_x': 7857.12890625, 'node_y': 0.0}}, {'data': {'id': 'fake_node_2', 'fake': 1, 'node_x': 42337.5, 'node_y': 0.0}}, {'data': {'node_root_id': 'n0', 'node_root_date': 1.0, 'node_name': 'n0', 'mile': 0, 'id': 1, 'tooltip': 'character: Hot Spring', 'node_x': 7857.12890625, 'node_y': 1585.7142857142858}, 'classes': 'HotSpring'}, {'data': {'id': 'fake_node_3', 'fake': 1, 'node_x': 0, 'node_y': 1585.7142857142858}}, {'data': {'id': 'fake_node_4', 'fake': 1, 'node_x': 15714.2578125, 'node_y': 1585.7142857142858}}, {'data': {'node_root_id': 'n3535', 'node_root_date': 1.0, 'node_name': 'n3535', 'mile': 0, 'id': 2, 'tooltip': 'character: Hot Spring', 'node_x': 42337.5, 'node_y': 1585.7142857142858}, 'classes': 'HotSpring'}, {'data': {'id': 'fake_node_5', 'fake': 1, 'node_x': 41400, 'node_y': 1585.7142857142858}}, {'data': {'id': 'fake_node_6', 'fake': 1, 'node_x': 43275.0, 'node_y': 1585.7142857142858}}, {'data': {'node_root_date': 2.0, 'node_name': 'g0053', 'mile': 0, 'node_root_id': 'g0053', 'id': 3, 'tip': 1, 'tooltip': 'character: Gut', 'node_x': 0, 'node_y': 3171.4285714285716}, 'classes': 'Gut'}, {'data': {'node_root_id': 'n00', 'node_root_date': 2.0, 'node_name': 'n00', 'mile': 1, 'id': 4, 'tooltip': 'character: Hot Spring', 'node_x': 15714.2578125, 'node_y': 3171.4285714285716}, 'classes': 'HotSpring'}, {'data': {'id': 'fake_node_7', 'fake': 1, 'node_x': 900.0, 'node_y': 3171.4285714285716}}, {'data': {'id': 'fake_node_8', 'fake': 1, 'node_x': 30528.515625, 'node_y': 3171.4285714285716}}, {'data': {'node_root_date': 2.0, 'node_name': 'g0002', 'mile': 0, 'node_root_id': 'g0002', 'id': 5, 'tip': 1, 'tooltip': 'character: Hot Spring', 'node_x': 41400, 'node_y': 3171.4285714285716}, 'classes': 'HotSpring'}, {'data': {'node_root_id': 'n36', 'node_root_date': 2.0, 'node_name': 'n36', 'mile': 1, 'id': 6, 'tooltip': 'character: Hot Spring', 'node_x': 43275.0, 'node_y': 3171.4285714285716}, 'classes': 'HotSpring'}, {'data': {'id': 'fake_node_9', 'fake': 1, 'node_x': 42750.0, 'node_y': 3171.4285714285716}}, {'data': {'id': 'fake_node_10', 'fake': 1, 'node_x': 43800, 'node_y': 3171.4285714285716}}, {'data': {'node_root_id': 'n1', 'node_root_date': 3.0, 'node_name': 'n1', 'mile': 1, 'id': 7, 'tooltip': 'character: Hot Spring', 'node_x': 900.0, 'node_y': 4757.142857142857}, 'classes': 'HotSpring'}, {'data': {'id': 'fake_node_11', 'fake': 1, 'node_x': 600, 'node_y': 4757.142857142857}}, {'data': {'id': 'fake_node_12', 'fake': 1, 'node_x': 1200, 'node_y': 4757.142857142857}}, {'data': {'node_root_id': 'n11', 'node_root_date': 3.0, 'node_name': 'n11', 'mile': 1, 'unresolved': 1, 'id': 8, 'tooltip': 'character: Freshwater or Gut or Hot Spring or Marine or Soda Lake', 'node_x': 30528.515625, 'node_y': 4757.142857142857}, 'classes': 'Freshwater-Gut-HotSpring-Marine-SodaLake'}, {'data': {'id': 'fake_node_13', 'fake': 1, 'node_x': 25132.03125, 'node_y': 4757.142857142857}}, {'data': {'id': 'fake_node_14', 'fake': 1, 'node_x': 35925.0, 'node_y': 4757.142857142857}}, {'data': {'node_root_id': 'n3636', 'node_root_date': 3.0, 'node_name': 'n3636', 'mile': 1, 'id': 9, 'tooltip': 'character: Hot Spring', 'node_x': 42750.0, 'node_y': 4757.142857142857}, 'classes': 'HotSpring'}, {'data': {'id': 'fake_node_15', 'fake': 1, 'node_x': 42300.0, 'node_y': 4757.142857142857}}, {'data': {'id': 'fake_node_16', 'fake': 1, 'node_x': 43200, 'node_y': 4757.142857142857}}, {'data': {'node_root_date': 3.0, 'node_name': 'g0018', 'mile': 1, 'node_root_id': 'g0018', 'id': 10, 'tip': 1, 'tooltip': 'character: Marine', 'node_x': 43800, 'node_y': 4757.142857142857}, 'classes': 'Marine'}, {'data': {'node_root_date': 4.0, 'node_name': 'g0038', 'mile': 1, 'node_root_id': 'g0038', 'id': 11, 'tip': 1, 'tooltip': 'character: Hot Spring', 'node_x': 600, 'node_y': 6342.857142857143}, 'classes': 'HotSpring'}, {'data': {'node_root_date': 4.0, 'node_name': 'g0061', 'mile': 1, 'node_root_id': 'g0061', 'id': 12, 'tip': 1, 'tooltip': 'character: Hot Spring', 'node_x': 1200, 'node_y': 6342.857142857143}, 'classes': 'HotSpring'}, {'data': {'node_root_id': 'n2', 'node_root_date': 4.0, 'node_name': 'n2', 'mile': 1, 'unresolved': 1, 'id': 13, 'tooltip': 'character: Freshwater or Marine or Soda Lake', 'node_x': 25132.03125, 'node_y': 6342.857142857143}, 'classes': 'Freshwater-Marine-SodaLake'}, {'data': {'id': 'fake_node_17', 'fake': 1, 'node_x': 19598.4375, 'node_y': 6342.857142857143}}, {'data': {'id': 'fake_node_18', 'fake': 1, 'node_x': 30665.625, 'node_y': 6342.857142857143}}, {'data': {'node_root_id': 'n29', 'node_root_date': 4.0, 'node_name': 'n29', 'mile': 1, 'unresolved': 1, 'id': 14, 'tooltip': 'character: Freshwater or Gut', 'node_x': 35925.0, 'node_y': 6342.857142857143}, 'classes': 'Freshwater-Gut'}, {'data': {'id': 'fake_node_19', 'fake': 1, 'node_x': 34500.0, 'node_y': 6342.857142857143}}, {'data': {'id': 'fake_node_20', 'fake': 1, 'node_x': 37350.0, 'node_y': 6342.857142857143}}, {'data': {'node_root_id': 'n37', 'node_root_date': 4.0, 'node_name': 'n37', 'mile': 1, 'unresolved': 1, 'id': 15, 'tooltip': 'character: Hot Spring or Marine', 'node_x': 42300.0, 'node_y': 6342.857142857143}, 'classes': 'HotSpring-Marine'}, {'data': {'id': 'fake_node_21', 'fake': 1, 'node_x': 42000, 'node_y': 6342.857142857143}}, {'data': {'id': 'fake_node_22', 'fake': 1, 'node_x': 42600, 'node_y': 6342.857142857143}}, {'data': {'node_root_date': 4.0, 'node_name': 'g0019', 'mile': 1, 'node_root_id': 'g0019', 'id': 16, 'tip': 1, 'tooltip': 'character: Hot Spring', 'node_x': 43200, 'node_y': 6342.857142857143}, 'classes': 'HotSpring'}, {'data': {'node_root_id': 'n22', 'node_root_date': 5.0, 'node_name': 'n22', 'mile': 1, 'id': 17, 'tooltip': 'character: Marine', 'node_x': 19598.4375, 'node_y': 7928.571428571429}, 'classes': 'Marine'}, {'data': {'id': 'fake_node_23', 'fake': 1, 'node_x': 15646.875, 'node_y': 7928.571428571429}}, {'data': {'id': 'fake_node_24', 'fake': 1, 'node_x': 23550.0, 'node_y': 7928.571428571429}}, {'data': {'node_root_id': 'n2121', 'node_root_date': 5.0, 'node_name': 'n2121', 'mile': 1, 'id': 18, 'tooltip': 'character: Soda Lake', 'node_x': 30665.625, 'node_y': 7928.571428571429}, 'classes': 'SodaLake'}, {'data': {'id': 'fake_node_25', 'fake': 1, 'node_x': 29456.25, 'node_y': 7928.571428571429}}, {'data': {'id': 'fake_node_26', 'fake': 1, 'node_x': 31875.0, 'node_y': 7928.571428571429}}, {'data': {'node_root_id': 'n2929', 'node_root_date': 5.0, 'node_name': 'n2929', 'mile': 1, 'id': 19, 'tooltip': 'character: Freshwater', 'node_x': 34500.0, 'node_y': 7928.571428571429}, 'classes': 'Freshwater'}, {'data': {'id': 'fake_node_27', 'fake': 1, 'node_x': 33900.0, 'node_y': 7928.571428571429}}, {'data': {'id': 'fake_node_28', 'fake': 1, 'node_x': 35100.0, 'node_y': 7928.571428571429}}, {'data': {'node_root_id': 'n31', 'node_root_date': 5.0, 'node_name': 'n31', 'mile': 1, 'unresolved': 1, 'id': 20, 'tooltip': 'character: Freshwater or Gut', 'node_x': 37350.0, 'node_y': 7928.571428571429}, 'classes': 'Freshwater-Gut'}, {'data': {'id': 'fake_node_29', 'fake': 1, 'node_x': 36000, 'node_y': 7928.571428571429}}, {'data': {'id': 'fake_node_30', 'fake': 1, 'node_x': 38700.0, 'node_y': 7928.571428571429}}, {'data': {'node_root_date': 5.0, 'node_name': 'g0003', 'mile': 1, 'node_root_id': 'g0003', 'unresolved': 1, 'id': 21, 'tip': 1, 'tooltip': 'character: Hot Spring or Marine', 'node_x': 42000, 'node_y': 7928.571428571429}, 'classes': 'HotSpring-Marine'}, {'data': {'node_root_date': 5.0, 'node_name': 'g0004', 'mile': 1, 'node_root_id': 'g0004', 'id': 22, 'tip': 1, 'tooltip': 'character: Marine', 'node_x': 42600, 'node_y': 7928.571428571429}, 'classes': 'Marine'}, {'data': {'node_root_id': 'n3', 'node_root_date': 6.0, 'node_name': 'n3', 'mile': 3, 'id': 23, 'tooltip': 'character: Marine', 'node_x': 15646.875, 'node_y': 9514.285714285714}, 'classes': 'Marine'}, {'data': {'id': 'fake_node_31', 'fake': 1, 'node_x': 10443.75, 'node_y': 9514.285714285714}}, {'data': {'id': 'fake_node_32', 'fake': 1, 'node_x': 20850.0, 'node_y': 9514.285714285714}}, {'data': {'node_root_id': 'n2020', 'node_root_date': 6.0, 'node_name': 'n2020', 'mile': 1, 'id': 24, 'tooltip': 'character: Marine', 'node_x': 23550.0, 'node_y': 9514.285714285714}, 'classes': 'Marine'}, {'data': {'id': 'fake_node_33', 'fake': 1, 'node_x': 23100.0, 'node_y': 9514.285714285714}}, {'data': {'id': 'fake_node_34', 'fake': 1, 'node_x': 24000, 'node_y': 9514.285714285714}}, {'data': {'node_root_id': 'n2222', 'node_root_date': 6.0, 'node_name': 'n2222', 'mile': 1, 'id': 25, 'tooltip': 'character: Soda Lake', 'node_x': 29456.25, 'node_y': 9514.285714285714}, 'classes': 'SodaLake'}, {'data': {'id': 'fake_node_35', 'fake': 1, 'node_x': 28312.5, 'node_y': 9514.285714285714}}, {'data': {'id': 'fake_node_36', 'fake': 1, 'node_x': 30600, 'node_y': 9514.285714285714}}, {'data': {'node_root_id': 'n2727', 'node_root_date': 6.0, 'node_name': 'n2727', 'mile': 1, 'id': 26, 'tooltip': 'character: Soda Lake', 'node_x': 31875.0, 'node_y': 9514.285714285714}, 'classes': 'SodaLake'}, {'data': {'id': 'fake_node_37', 'fake': 1, 'node_x': 31200, 'node_y': 9514.285714285714}}, {'data': {'id': 'fake_node_38', 'fake': 1, 'node_x': 32550.0, 'node_y': 9514.285714285714}}, {'data': {'node_root_id': 'n30', 'node_root_date': 6.0, 'node_name': 'n30', 'mile': 1, 'id': 27, 'tooltip': 'character: Freshwater', 'node_x': 33900.0, 'node_y': 9514.285714285714}, 'classes': 'Freshwater'}, {'data': {'id': 'fake_node_39', 'fake': 1, 'node_x': 33600, 'node_y': 9514.285714285714}}, {'data': {'id': 'fake_node_40', 'fake': 1, 'node_x': 34200, 'node_y': 9514.285714285714}}, {'data': {'node_root_id': 'n3030', 'node_root_date': 6.0, 'node_name': 'n3030', 'mile': 1, 'id': 28, 'tooltip': 'character: Freshwater', 'node_x': 35100.0, 'node_y': 9514.285714285714}, 'classes': 'Freshwater'}, {'data': {'id': 'fake_node_41', 'fake': 1, 'node_x': 34800, 'node_y': 9514.285714285714}}, {'data': {'id': 'fake_node_42', 'fake': 1, 'node_x': 35400, 'node_y': 9514.285714285714}}, {'data': {'node_root_date': 6.0, 'node_name': 'g0032', 'mile': 1, 'node_root_id': 'g0032', 'id': 29, 'tip': 1, 'tooltip': 'character: Gut', 'node_x': 36000, 'node_y': 9514.285714285714}, 'classes': 'Gut'}, {'data': {'node_root_id': 'n3131', 'node_root_date': 6.0, 'node_name': 'n3131', 'mile': 3, 'unresolved': 1, 'id': 30, 'tooltip': 'character: Freshwater or Gut', 'node_x': 38700.0, 'node_y': 9514.285714285714}, 'classes': 'Freshwater-Gut'}, {'data': {'id': 'fake_node_43', 'fake': 1, 'node_x': 37500.0, 'node_y': 9514.285714285714}}, {'data': {'id': 'fake_node_44', 'fake': 1, 'node_x': 39900.0, 'node_y': 9514.285714285714}}, {'data': {'node_root_id': 'n33', 'node_root_date': 7.0, 'node_name': 'n33', 'mile': 4, 'id': 31, 'tooltip': 'character: Marine', 'node_x': 10443.75, 'node_y': 11100.0}, 'classes': 'Marine'}, {'data': {'id': 'fake_node_45', 'fake': 1, 'node_x': 7612.5, 'node_y': 11100.0}}, {'data': {'id': 'fake_node_46', 'fake': 1, 'node_x': 13275.0, 'node_y': 11100.0}}, {'data': {'node_root_id': 'n18', 'node_root_date': 7.0, 'node_name': 'n18', 'mile': 3, 'id': 32, 'tooltip': 'character: Marine', 'node_x': 20850.0, 'node_y': 11100.0}, 'classes': 'Marine'}, {'data': {'id': 'fake_node_47', 'fake': 1, 'node_x': 19950.0, 'node_y': 11100.0}}, {'data': {'id': 'fake_node_48', 'fake': 1, 'node_x': 21750.0, 'node_y': 11100.0}}, {'data': {'node_root_id': 'n21', 'node_root_date': 7.0, 'node_name': 'n21', 'mile': 2, 'id': 33, 'tooltip': 'character: Marine', 'node_x': 23100.0, 'node_y': 11100.0}, 'classes': 'Marine'}, {'data': {'id': 'fake_node_49', 'fake': 1, 'node_x': 22800, 'node_y': 11100.0}}, {'data': {'id': 'fake_node_50', 'fake': 1, 'node_x': 23400, 'node_y': 11100.0}}, {'data': {'node_root_date': 7.0, 'node_name': 'g0037', 'mile': 1, 'node_root_id': 'g0037', 'id': 34, 'tip': 1, 'tooltip': 'character: Marine', 'node_x': 24000, 'node_y': 11100.0}, 'classes': 'Marine'}, {'data': {'node_root_id': 'n23', 'node_root_date': 7.0, 'node_name': 'n23', 'mile': 3, 'id': 35, 'tooltip': 'character: Soda Lake', 'node_x': 28312.5, 'node_y': 11100.0}, 'classes': 'SodaLake'}, {'data': {'id': 'fake_node_51', 'fake': 1, 'node_x': 27075.0, 'node_y': 11100.0}}, {'data': {'id': 'fake_node_52', 'fake': 1, 'node_x': 29550.0, 'node_y': 11100.0}}, {'data': {'node_root_date': 7.0, 'node_name': 'g0064', 'mile': 1, 'node_root_id': 'g0064', 'id': 36, 'tip': 1, 'tooltip': 'character: Soda Lake', 'node_x': 30600, 'node_y': 11100.0}, 'classes': 'SodaLake'}, {'data': {'node_root_date': 7.0, 'node_name': 'g0017', 'mile': 1, 'node_root_id': 'g0017', 'id': 37, 'tip': 1, 'tooltip': 'character: Soda Lake', 'node_x': 31200, 'node_y': 11100.0}, 'classes': 'SodaLake'}, {'data': {'node_root_id': 'n28', 'node_root_date': 7.0, 'node_name': 'n28', 'mile': 2, 'id': 38, 'tooltip': 'character: Freshwater', 'node_x': 32550.0, 'node_y': 11100.0}, 'classes': 'Freshwater'}, {'data': {'id': 'fake_node_53', 'fake': 1, 'node_x': 32100.0, 'node_y': 11100.0}}, {'data': {'id': 'fake_node_54', 'fake': 1, 'node_x': 33000, 'node_y': 11100.0}}, {'data': {'node_root_date': 7.0, 'node_name': 'g0023', 'mile': 1, 'node_root_id': 'g0023', 'id': 39, 'tip': 1, 'tooltip': 'character: Freshwater', 'node_x': 33600, 'node_y': 11100.0}, 'classes': 'Freshwater'}, {'data': {'node_root_date': 7.0, 'node_name': 'g990069', 'mile': 1, 'node_root_id': 'g990069', 'id': 40, 'tip': 1, 'tooltip': 'character: Freshwater', 'node_x': 34200, 'node_y': 11100.0}, 'classes': 'Freshwater'}, {'data': {'node_root_date': 7.0, 'node_name': 'g0025', 'mile': 1, 'node_root_id': 'g0025', 'id': 41, 'tip': 1, 'tooltip': 'character: Marine', 'node_x': 34800, 'node_y': 11100.0}, 'classes': 'Marine'}, {'data': {'node_root_date': 7.0, 'node_name': 'g990079', 'mile': 1, 'node_root_id': 'g990079', 'id': 42, 'tip': 1, 'tooltip': 'character: Freshwater', 'node_x': 35400, 'node_y': 11100.0}, 'classes': 'Freshwater'}, {'data': {'node_root_id': 'n32', 'node_root_date': 7.0, 'node_name': 'n32', 'mile': 3, 'unresolved': 1, 'id': 43, 'tooltip': 'character: Freshwater or Gut', 'node_x': 37500.0, 'node_y': 11100.0}, 'classes': 'Freshwater-Gut'}, {'data': {'id': 'fake_node_55', 'fake': 1, 'node_x': 36900.0, 'node_y': 11100.0}}, {'data': {'id': 'fake_node_56', 'fake': 1, 'node_x': 38100.0, 'node_y': 11100.0}}, {'data': {'node_root_id': 'n34', 'node_root_date': 7.0, 'node_name': 'n34', 'mile': 3, 'unresolved': 1, 'id': 44, 'tooltip': 'character: Gut or Marine or Soil', 'node_x': 39900.0, 'node_y': 11100.0}, 'classes': 'Gut-Marine-Soil'}, {'data': {'id': 'fake_node_57', 'fake': 1, 'node_x': 39300.0, 'node_y': 11100.0}}, {'data': {'id': 'fake_node_58', 'fake': 1, 'node_x': 40500.0, 'node_y': 11100.0}}, {'data': {'node_root_id': 'n4', 'node_root_date': 8.0, 'node_name': 'n4', 'mile': 4, 'id': 45, 'tooltip': 'character: Marine', 'node_x': 7612.5, 'node_y': 12685.714285714286}, 'classes': 'Marine'}, {'data': {'id': 'fake_node_59', 'fake': 1, 'node_x': 5475.0, 'node_y': 12685.714285714286}}, {'data': {'id': 'fake_node_60', 'fake': 1, 'node_x': 9750.0, 'node_y': 12685.714285714286}}, {'data': {'node_root_id': 'n1111', 'node_root_date': 8.0, 'node_name': 'n1111', 'mile': 4, 'id': 46, 'tooltip': 'character: Marine', 'node_x': 13275.0, 'node_y': 12685.714285714286}, 'classes': 'Marine'}, {'data': {'id': 'fake_node_61', 'fake': 1, 'node_x': 11550.0, 'node_y': 12685.714285714286}}, {'data': {'id': 'fake_node_62', 'fake': 1, 'node_x': 15000.0, 'node_y': 12685.714285714286}}, {'data': {'node_root_id': 'n1818', 'node_root_date': 8.0, 'node_name': 'n1818', 'mile': 3, 'unresolved': 1, 'id': 47, 'tooltip': 'character: Marine or Soda Lake', 'node_x': 19950.0, 'node_y': 12685.714285714286}, 'classes': 'Marine-SodaLake'}, {'data': {'id': 'fake_node_63', 'fake': 1, 'node_x': 19500.0, 'node_y': 12685.714285714286}}, {'data': {'id': 'fake_node_64', 'fake': 1, 'node_x': 20400, 'node_y': 12685.714285714286}}, {'data': {'node_root_id': 'n1919', 'node_root_date': 8.0, 'node_name': 'n1919', 'mile': 3, 'id': 48, 'tooltip': 'character: Marine', 'node_x': 21750.0, 'node_y': 12685.714285714286}, 'classes': 'Marine'}, {'data': {'id': 'fake_node_65', 'fake': 1, 'node_x': 21300.0, 'node_y': 12685.714285714286}}, {'data': {'id': 'fake_node_66', 'fake': 1, 'node_x': 22200, 'node_y': 12685.714285714286}}, {'data': {'node_root_date': 8.0, 'node_name': 'g0021', 'mile': 2, 'node_root_id': 'g0021', 'id': 49, 'tip': 1, 'tooltip': 'character: Marine', 'node_x': 22800, 'node_y': 12685.714285714286}, 'classes': 'Marine'}, {'data': {'node_root_date': 8.0, 'node_name': 'g990071', 'mile': 2, 'node_root_id': 'g990071', 'id': 50, 'tip': 1, 'tooltip': 'character: Marine', 'node_x': 23400, 'node_y': 12685.714285714286}, 'classes': 'Marine'}, {'data': {'node_root_id': 'n2323', 'node_root_date': 8.0, 'node_name': 'n2323', 'mile': 3, 'id': 51, 'tooltip': 'character: Soda Lake', 'node_x': 27075.0, 'node_y': 12685.714285714286}, 'classes': 'SodaLake'}, {'data': {'id': 'fake_node_67', 'fake': 1, 'node_x': 25950.0, 'node_y': 12685.714285714286}}, {'data': {'id': 'fake_node_68', 'fake': 1, 'node_x': 28200, 'node_y': 12685.714285714286}}, {'data': {'node_root_id': 'n2626', 'node_root_date': 8.0, 'node_name': 'n2626', 'mile': 3, 'id': 52, 'tooltip': 'character: Soda Lake', 'node_x': 29550.0, 'node_y': 12685.714285714286}, 'classes': 'SodaLake'}, {'data': {'id': 'fake_node_69', 'fake': 1, 'node_x': 29100.0, 'node_y': 12685.714285714286}}, {'data': {'id': 'fake_node_70', 'fake': 1, 'node_x': 30000, 'node_y': 12685.714285714286}}, {'data': {'node_root_id': 'n2828', 'node_root_date': 8.0, 'node_name': 'n2828', 'mile': 3, 'id': 53, 'tooltip': 'character: Freshwater', 'node_x': 32100.0, 'node_y': 12685.714285714286}, 'classes': 'Freshwater'}, {'data': {'id': 'fake_node_71', 'fake': 1, 'node_x': 31800, 'node_y': 12685.714285714286}}, {'data': {'id': 'fake_node_72', 'fake': 1, 'node_x': 32400, 'node_y': 12685.714285714286}}, {'data': {'node_root_date': 8.0, 'node_name': 'g0054', 'mile': 2, 'node_root_id': 'g0054', 'id': 54, 'tip': 1, 'tooltip': 'character: Freshwater', 'node_x': 33000, 'node_y': 12685.714285714286}, 'classes': 'Freshwater'}, {'data': {'node_root_id': 'n3232', 'node_root_date': 8.0, 'node_name': 'n3232', 'mile': 3, 'id': 55, 'tooltip': 'character: Gut', 'node_x': 36900.0, 'node_y': 12685.714285714286}, 'classes': 'Gut'}, {'data': {'id': 'fake_node_73', 'fake': 1, 'node_x': 36600, 'node_y': 12685.714285714286}}, {'data': {'id': 'fake_node_74', 'fake': 1, 'node_x': 37200, 'node_y': 12685.714285714286}}, {'data': {'node_root_id': 'n3333', 'node_root_date': 8.0, 'node_name': 'n3333', 'mile': 3, 'unresolved': 1, 'id': 56, 'tooltip': 'character: Freshwater or Gut', 'node_x': 38100.0, 'node_y': 12685.714285714286}, 'classes': 'Freshwater-Gut'}, {'data': {'id': 'fake_node_75', 'fake': 1, 'node_x': 37800, 'node_y': 12685.714285714286}}, {'data': {'id': 'fake_node_76', 'fake': 1, 'node_x': 38400, 'node_y': 12685.714285714286}}, {'data': {'node_root_id': 'n3434', 'node_root_date': 8.0, 'node_name': 'n3434', 'mile': 3, 'id': 57, 'tooltip': 'character: Soil', 'node_x': 39300.0, 'node_y': 12685.714285714286}, 'classes': 'Soil'}, {'data': {'id': 'fake_node_77', 'fake': 1, 'node_x': 39000, 'node_y': 12685.714285714286}}, {'data': {'id': 'fake_node_78', 'fake': 1, 'node_x': 39600, 'node_y': 12685.714285714286}}, {'data': {'node_root_id': 'n35', 'node_root_date': 8.0, 'node_name': 'n35', 'mile': 3, 'unresolved': 1, 'id': 58, 'tooltip': 'character: Marine or Soil', 'node_x': 40500.0, 'node_y': 12685.714285714286}, 'classes': 'Marine-Soil'}, {'data': {'id': 'fake_node_79', 'fake': 1, 'node_x': 40200, 'node_y': 12685.714285714286}}, {'data': {'id': 'fake_node_80', 'fake': 1, 'node_x': 40800, 'node_y': 12685.714285714286}}, {'data': {'node_root_id': 'n44', 'node_root_date': 9.0, 'node_name': 'n44', 'mile': 5, 'id': 59, 'tooltip': 'character: Marine', 'node_x': 5475.0, 'node_y': 14271.428571428572}, 'classes': 'Marine'}, {'data': {'id': 'fake_node_81', 'fake': 1, 'node_x': 3487.5, 'node_y': 14271.428571428572}}, {'data': {'id': 'fake_node_82', 'fake': 1, 'node_x': 7462.5, 'node_y': 14271.428571428572}}, {'data': {'node_root_id': 'n10', 'node_root_date': 9.0, 'node_name': 'n10', 'mile': 4, 'id': 60, 'tooltip': 'character: Marine', 'node_x': 9750.0, 'node_y': 14271.428571428572}, 'classes': 'Marine'}, {'data': {'id': 'fake_node_83', 'fake': 1, 'node_x': 9300.0, 'node_y': 14271.428571428572}}, {'data': {'id': 'fake_node_84', 'fake': 1, 'node_x': 10200, 'node_y': 14271.428571428572}}, {'data': {'node_root_id': 'n12', 'node_root_date': 9.0, 'node_name': 'n12', 'mile': 4, 'id': 61, 'tooltip': 'character: Marine', 'node_x': 11550.0, 'node_y': 14271.428571428572}, 'classes': 'Marine'}, {'data': {'id': 'fake_node_85', 'fake': 1, 'node_x': 11100.0, 'node_y': 14271.428571428572}}, {'data': {'id': 'fake_node_86', 'fake': 1, 'node_x': 12000, 'node_y': 14271.428571428572}}, {'data': {'node_root_id': 'n13', 'node_root_date': 9.0, 'node_name': 'n13', 'mile': 5, 'id': 62, 'tooltip': 'character: Marine', 'node_x': 15000.0, 'node_y': 14271.428571428572}, 'classes': 'Marine'}, {'data': {'id': 'fake_node_87', 'fake': 1, 'node_x': 13350.0, 'node_y': 14271.428571428572}}, {'data': {'id': 'fake_node_88', 'fake': 1, 'node_x': 16650.0, 'node_y': 14271.428571428572}}, {'data': {'node_root_id': 'n19', 'node_root_date': 9.0, 'node_name': 'n19', 'mile': 4, 'unresolved': 1, 'id': 63, 'tooltip': 'character: Marine or Soda Lake', 'node_x': 19500.0, 'node_y': 14271.428571428572}, 'classes': 'Marine-SodaLake'}, {'data': {'id': 'fake_node_89', 'fake': 1, 'node_x': 19200, 'node_y': 14271.428571428572}}, {'data': {'id': 'fake_node_90', 'fake': 1, 'node_x': 19800, 'node_y': 14271.428571428572}}, {'data': {'node_root_date': 9.0, 'node_name': 'g0031', 'mile': 3, 'node_root_id': 'g0031', 'id': 64, 'tip': 1, 'tooltip': 'character: Soda Lake', 'node_x': 20400, 'node_y': 14271.428571428572}, 'classes': 'SodaLake'}, {'data': {'node_root_id': 'n20', 'node_root_date': 9.0, 'node_name': 'n20', 'mile': 4, 'id': 65, 'tooltip': 'character: Marine', 'node_x': 21300.0, 'node_y': 14271.428571428572}, 'classes': 'Marine'}, {'data': {'id': 'fake_node_91', 'fake': 1, 'node_x': 21000, 'node_y': 14271.428571428572}}, {'data': {'id': 'fake_node_92', 'fake': 1, 'node_x': 21600, 'node_y': 14271.428571428572}}, {'data': {'node_root_date': 9.0, 'node_name': 'g0034', 'mile': 3, 'node_root_id': 'g0034', 'id': 66, 'tip': 1, 'tooltip': 'character: Marine', 'node_x': 22200, 'node_y': 14271.428571428572}, 'classes': 'Marine'}, {'data': {'node_root_id': 'n24', 'node_root_date': 9.0, 'node_name': 'n24', 'mile': 5, 'id': 67, 'tooltip': 'character: Soda Lake', 'node_x': 25950.0, 'node_y': 14271.428571428572}, 'classes': 'SodaLake'}, {'data': {'id': 'fake_node_93', 'fake': 1, 'node_x': 25050.0, 'node_y': 14271.428571428572}}, {'data': {'id': 'fake_node_94', 'fake': 1, 'node_x': 26850.0, 'node_y': 14271.428571428572}}, {'data': {'node_root_date': 9.0, 'node_name': 'g0015', 'mile': 3, 'node_root_id': 'g0015', 'id': 68, 'tip': 1, 'tooltip': 'character: Soda Lake', 'node_x': 28200, 'node_y': 14271.428571428572}, 'classes': 'SodaLake'}, {'data': {'node_root_id': 'n27', 'node_root_date': 9.0, 'node_name': 'n27', 'mile': 4, 'id': 69, 'tooltip': 'character: Soda Lake', 'node_x': 29100.0, 'node_y': 14271.428571428572}, 'classes': 'SodaLake'}, {'data': {'id': 'fake_node_95', 'fake': 1, 'node_x': 28800, 'node_y': 14271.428571428572}}, {'data': {'id': 'fake_node_96', 'fake': 1, 'node_x': 29400, 'node_y': 14271.428571428572}}, {'data': {'node_root_date': 9.0, 'node_name': 'g0035', 'mile': 3, 'node_root_id': 'g0035', 'id': 70, 'tip': 1, 'tooltip': 'character: Soda Lake', 'node_x': 30000, 'node_y': 14271.428571428572}, 'classes': 'SodaLake'}, {'data': {'node_root_date': 9.0, 'node_name': 'g0024', 'mile': 3, 'node_root_id': 'g0024', 'id': 71, 'tip': 1, 'tooltip': 'character: Gut', 'node_x': 31800, 'node_y': 14271.428571428572}, 'classes': 'Gut'}, {'data': {'node_root_date': 9.0, 'node_name': 'g990075', 'mile': 3, 'node_root_id': 'g990075', 'id': 72, 'tip': 1, 'tooltip': 'character: Freshwater', 'node_x': 32400, 'node_y': 14271.428571428572}, 'classes': 'Freshwater'}, {'data': {'node_root_date': 9.0, 'node_name': 'g0028', 'mile': 3, 'node_root_id': 'g0028', 'id': 73, 'tip': 1, 'tooltip': 'character: Gut', 'node_x': 36600, 'node_y': 14271.428571428572}, 'classes': 'Gut'}, {'data': {'node_root_date': 9.0, 'node_name': 'g990070', 'mile': 3, 'node_root_id': 'g990070', 'id': 74, 'tip': 1, 'tooltip': 'character: Gut', 'node_x': 37200, 'node_y': 14271.428571428572}, 'classes': 'Gut'}, {'data': {'node_root_date': 9.0, 'node_name': 'g0063', 'mile': 3, 'node_root_id': 'g0063', 'id': 75, 'tip': 1, 'tooltip': 'character: Freshwater', 'node_x': 37800, 'node_y': 14271.428571428572}, 'classes': 'Freshwater'}, {'data': {'node_root_date': 9.0, 'node_name': 'g990074', 'mile': 3, 'node_root_id': 'g990074', 'unresolved': 1, 'id': 76, 'tip': 1, 'tooltip': 'character: Freshwater or Gut', 'node_x': 38400, 'node_y': 14271.428571428572}, 'classes': 'Freshwater-Gut'}, {'data': {'node_root_date': 9.0, 'node_name': 'g0027', 'mile': 3, 'node_root_id': 'g0027', 'id': 77, 'tip': 1, 'tooltip': 'character: Soil', 'node_x': 39000, 'node_y': 14271.428571428572}, 'classes': 'Soil'}, {'data': {'node_root_date': 9.0, 'node_name': 'g990072', 'mile': 3, 'node_root_id': 'g990072', 'id': 78, 'tip': 1, 'tooltip': 'character: Soil', 'node_x': 39600, 'node_y': 14271.428571428572}, 'classes': 'Soil'}, {'data': {'node_root_date': 9.0, 'node_name': 'g0000', 'mile': 3, 'node_root_id': 'g0000', 'unresolved': 1, 'id': 79, 'tip': 1, 'tooltip': 'character: Gut or Marine or Soil', 'node_x': 40200, 'node_y': 14271.428571428572}, 'classes': 'Gut-Marine-Soil'}, {'data': {'node_root_date': 9.0, 'node_name': 'g990076', 'mile': 3, 'node_root_id': 'g990076', 'id': 80, 'tip': 1, 'tooltip': 'character: Marine', 'node_x': 40800, 'node_y': 14271.428571428572}, 'classes': 'Marine'}, {'data': {'node_root_id': 'n5', 'node_root_date': 10.0, 'node_name': 'n5', 'mile': 6, 'id': 81, 'tooltip': 'character: Marine', 'node_x': 3487.5, 'node_y': 15857.142857142859}, 'classes': 'Marine'}, {'data': {'id': 'fake_node_97', 'fake': 1, 'node_x': 2475.0, 'node_y': 15857.142857142859}}, {'data': {'id': 'fake_node_98', 'fake': 1, 'node_x': 4500.0, 'node_y': 15857.142857142859}}, {'data': {'node_root_id': 'n77', 'node_root_date': 10.0, 'node_name': 'n77', 'mile': 5, 'id': 82, 'tooltip': 'character: Marine', 'node_x': 7462.5, 'node_y': 15857.142857142859}, 'classes': 'Marine'}, {'data': {'id': 'fake_node_99', 'fake': 1, 'node_x': 6525.0, 'node_y': 15857.142857142859}}, {'data': {'id': 'fake_node_100', 'fake': 1, 'node_x': 8400, 'node_y': 15857.142857142859}}, {'data': {'node_root_id': 'n1010', 'node_root_date': 10.0, 'node_name': 'n1010', 'mile': 5, 'id': 83, 'tooltip': 'character: Marine', 'node_x': 9300.0, 'node_y': 15857.142857142859}, 'classes': 'Marine'}, {'data': {'id': 'fake_node_101', 'fake': 1, 'node_x': 9000, 'node_y': 15857.142857142859}}, {'data': {'id': 'fake_node_102', 'fake': 1, 'node_x': 9600, 'node_y': 15857.142857142859}}, {'data': {'node_root_date': 10.0, 'node_name': 'g0042', 'mile': 4, 'node_root_id': 'g0042', 'id': 84, 'tip': 1, 'tooltip': 'character: Marine', 'node_x': 10200, 'node_y': 15857.142857142859}, 'classes': 'Marine'}, {'data': {'node_root_id': 'n1212', 'node_root_date': 10.0, 'node_name': 'n1212', 'mile': 5, 'id': 85, 'tooltip': 'character: Marine', 'node_x': 11100.0, 'node_y': 15857.142857142859}, 'classes': 'Marine'}, {'data': {'id': 'fake_node_103', 'fake': 1, 'node_x': 10800, 'node_y': 15857.142857142859}}, {'data': {'id': 'fake_node_104', 'fake': 1, 'node_x': 11400, 'node_y': 15857.142857142859}}, {'data': {'node_root_date': 10.0, 'node_name': 'g0007', 'mile': 4, 'node_root_id': 'g0007', 'id': 86, 'tip': 1, 'tooltip': 'character: Marine', 'node_x': 12000, 'node_y': 15857.142857142859}, 'classes': 'Marine'}, {'data': {'node_root_id': 'n1313', 'node_root_date': 10.0, 'node_name': 'n1313', 'mile': 5, 'id': 87, 'tooltip': 'character: Marine', 'node_x': 13350.0, 'node_y': 15857.142857142859}, 'classes': 'Marine'}, {'data': {'id': 'fake_node_105', 'fake': 1, 'node_x': 12900.0, 'node_y': 15857.142857142859}}, {'data': {'id': 'fake_node_106', 'fake': 1, 'node_x': 13800, 'node_y': 15857.142857142859}}, {'data': {'node_root_id': 'n1414', 'node_root_date': 10.0, 'node_name': 'n1414', 'mile': 6, 'id': 88, 'tooltip': 'character: Gut', 'node_x': 16650.0, 'node_y': 15857.142857142859}, 'classes': 'Gut'}, {'data': {'id': 'fake_node_107', 'fake': 1, 'node_x': 15150.0, 'node_y': 15857.142857142859}}, {'data': {'id': 'fake_node_108', 'fake': 1, 'node_x': 18150.0, 'node_y': 15857.142857142859}}, {'data': {'node_root_date': 10.0, 'node_name': 'g0029', 'mile': 4, 'node_root_id': 'g0029', 'id': 89, 'tip': 1, 'tooltip': 'character: Soda Lake', 'node_x': 19200, 'node_y': 15857.142857142859}, 'classes': 'SodaLake'}, {'data': {'node_root_date': 10.0, 'node_name': 'g990067', 'mile': 4, 'node_root_id': 'g990067', 'id': 90, 'tip': 1, 'tooltip': 'character: Marine', 'node_x': 19800, 'node_y': 15857.142857142859}, 'classes': 'Marine'}, {'data': {'node_root_date': 10.0, 'node_name': 'g0033', 'mile': 4, 'node_root_id': 'g0033', 'id': 91, 'tip': 1, 'tooltip': 'character: Marine', 'node_x': 21000, 'node_y': 15857.142857142859}, 'classes': 'Marine'}, {'data': {'node_root_date': 10.0, 'node_name': 'g990066', 'mile': 4, 'node_root_id': 'g990066', 'id': 92, 'tip': 1, 'tooltip': 'character: Marine', 'node_x': 21600, 'node_y': 15857.142857142859}, 'classes': 'Marine'}, {'data': {'node_root_id': 'n2424', 'node_root_date': 10.0, 'node_name': 'n2424', 'mile': 5, 'id': 93, 'tooltip': 'character: Soda Lake', 'node_x': 25050.0, 'node_y': 15857.142857142859}, 'classes': 'SodaLake'}, {'data': {'id': 'fake_node_109', 'fake': 1, 'node_x': 24600, 'node_y': 15857.142857142859}}, {'data': {'id': 'fake_node_110', 'fake': 1, 'node_x': 25500.0, 'node_y': 15857.142857142859}}, {'data': {'node_root_id': 'n2525', 'node_root_date': 10.0, 'node_name': 'n2525', 'mile': 5, 'id': 94, 'tooltip': 'character: Soda Lake', 'node_x': 26850.0, 'node_y': 15857.142857142859}, 'classes': 'SodaLake'}, {'data': {'id': 'fake_node_111', 'fake': 1, 'node_x': 26400, 'node_y': 15857.142857142859}}, {'data': {'id': 'fake_node_112', 'fake': 1, 'node_x': 27300.0, 'node_y': 15857.142857142859}}, {'data': {'node_root_date': 10.0, 'node_name': 'g0030', 'mile': 4, 'node_root_id': 'g0030', 'id': 95, 'tip': 1, 'tooltip': 'character: Soda Lake', 'node_x': 28800, 'node_y': 15857.142857142859}, 'classes': 'SodaLake'}, {'data': {'node_root_date': 10.0, 'node_name': 'g0036', 'mile': 4, 'node_root_id': 'g0036', 'id': 96, 'tip': 1, 'tooltip': 'character: Soda Lake', 'node_x': 29400, 'node_y': 15857.142857142859}, 'classes': 'SodaLake'}, {'data': {'node_root_id': 'n55', 'node_root_date': 11.0, 'node_name': 'n55', 'mile': 6, 'id': 97, 'tooltip': 'character: Marine', 'node_x': 2475.0, 'node_y': 17442.857142857145}, 'classes': 'Marine'}, {'data': {'id': 'fake_node_113', 'fake': 1, 'node_x': 1800, 'node_y': 17442.857142857145}}, {'data': {'id': 'fake_node_114', 'fake': 1, 'node_x': 3150.0, 'node_y': 17442.857142857145}}, {'data': {'node_root_id': 'n7', 'node_root_date': 11.0, 'node_name': 'n7', 'mile': 6, 'id': 98, 'tooltip': 'character: Marine', 'node_x': 4500.0, 'node_y': 17442.857142857145}, 'classes': 'Marine'}, {'data': {'id': 'fake_node_115', 'fake': 1, 'node_x': 4200, 'node_y': 17442.857142857145}}, {'data': {'id': 'fake_node_116', 'fake': 1, 'node_x': 4800, 'node_y': 17442.857142857145}}, {'data': {'node_root_id': 'n8', 'node_root_date': 11.0, 'node_name': 'n8', 'mile': 7, 'id': 99, 'tooltip': 'character: Marine', 'node_x': 6525.0, 'node_y': 17442.857142857145}, 'classes': 'Marine'}, {'data': {'id': 'fake_node_117', 'fake': 1, 'node_x': 5700.0, 'node_y': 17442.857142857145}}, {'data': {'id': 'fake_node_118', 'fake': 1, 'node_x': 7350.0, 'node_y': 17442.857142857145}}, {'data': {'node_root_date': 11.0, 'node_name': 'g0056', 'mile': 5, 'node_root_id': 'g0056', 'id': 100, 'tip': 1, 'tooltip': 'character: Marine', 'node_x': 8400, 'node_y': 17442.857142857145}, 'classes': 'Marine'}, {'data': {'node_root_date': 11.0, 'node_name': 'g0008', 'mile': 5, 'node_root_id': 'g0008', 'id': 101, 'tip': 1, 'tooltip': 'character: Marine', 'node_x': 9000, 'node_y': 17442.857142857145}, 'classes': 'Marine'}, {'data': {'node_root_date': 11.0, 'node_name': 'g0057', 'mile': 5, 'node_root_id': 'g0057', 'id': 102, 'tip': 1, 'tooltip': 'character: Marine', 'node_x': 9600, 'node_y': 17442.857142857145}, 'classes': 'Marine'}, {'data': {'node_root_date': 11.0, 'node_name': 'g0006', 'mile': 5, 'node_root_id': 'g0006', 'id': 103, 'tip': 1, 'tooltip': 'character: Marine', 'node_x': 10800, 'node_y': 17442.857142857145}, 'classes': 'Marine'}, {'data': {'node_root_date': 11.0, 'node_name': 'g0062', 'mile': 5, 'node_root_id': 'g0062', 'id': 104, 'tip': 1, 'tooltip': 'character: Marine', 'node_x': 11400, 'node_y': 17442.857142857145}, 'classes': 'Marine'}, {'data': {'node_root_id': 'n14', 'node_root_date': 11.0, 'node_name': 'n14', 'mile': 6, 'id': 105, 'tooltip': 'character: Marine', 'node_x': 12900.0, 'node_y': 17442.857142857145}, 'classes': 'Marine'}, {'data': {'id': 'fake_node_119', 'fake': 1, 'node_x': 12600, 'node_y': 17442.857142857145}}, {'data': {'id': 'fake_node_120', 'fake': 1, 'node_x': 13200, 'node_y': 17442.857142857145}}, {'data': {'node_root_date': 11.0, 'node_name': 'g990068', 'mile': 5, 'node_root_id': 'g990068', 'id': 106, 'tip': 1, 'tooltip': 'character: Marine', 'node_x': 13800, 'node_y': 17442.857142857145}, 'classes': 'Marine'}, {'data': {'node_root_id': 'n15', 'node_root_date': 11.0, 'node_name': 'n15', 'mile': 6, 'id': 107, 'tooltip': 'character: Gut', 'node_x': 15150.0, 'node_y': 17442.857142857145}, 'classes': 'Gut'}, {'data': {'id': 'fake_node_121', 'fake': 1, 'node_x': 14400, 'node_y': 17442.857142857145}}, {'data': {'id': 'fake_node_122', 'fake': 1, 'node_x': 15900.0, 'node_y': 17442.857142857145}}, {'data': {'node_root_id': 'n17', 'node_root_date': 11.0, 'node_name': 'n17', 'mile': 6, 'id': 108, 'tooltip': 'character: Gut', 'node_x': 18150.0, 'node_y': 17442.857142857145}, 'classes': 'Gut'}, {'data': {'id': 'fake_node_123', 'fake': 1, 'node_x': 17700.0, 'node_y': 17442.857142857145}}, {'data': {'id': 'fake_node_124', 'fake': 1, 'node_x': 18600, 'node_y': 17442.857142857145}}, {'data': {'node_root_date': 11.0, 'node_name': 'g0009', 'mile': 5, 'node_root_id': 'g0009', 'id': 109, 'tip': 1, 'tooltip': 'character: Soda Lake', 'node_x': 24600, 'node_y': 17442.857142857145}, 'classes': 'SodaLake'}, {'data': {'node_root_id': 'n25', 'node_root_date': 11.0, 'node_name': 'n25', 'mile': 6, 'id': 110, 'tooltip': 'character: Soda Lake', 'node_x': 25500.0, 'node_y': 17442.857142857145}, 'classes': 'SodaLake'}, {'data': {'id': 'fake_node_125', 'fake': 1, 'node_x': 25200, 'node_y': 17442.857142857145}}, {'data': {'id': 'fake_node_126', 'fake': 1, 'node_x': 25800, 'node_y': 17442.857142857145}}, {'data': {'node_root_date': 11.0, 'node_name': 'g0010', 'mile': 5, 'node_root_id': 'g0010', 'id': 111, 'tip': 1, 'tooltip': 'character: Soda Lake', 'node_x': 26400, 'node_y': 17442.857142857145}, 'classes': 'SodaLake'}, {'data': {'node_root_id': 'n26', 'node_root_date': 11.0, 'node_name': 'n26', 'mile': 6, 'id': 112, 'tooltip': 'character: Soda Lake', 'node_x': 27300.0, 'node_y': 17442.857142857145}, 'classes': 'SodaLake'}, {'data': {'id': 'fake_node_127', 'fake': 1, 'node_x': 27000, 'node_y': 17442.857142857145}}, {'data': {'id': 'fake_node_128', 'fake': 1, 'node_x': 27600, 'node_y': 17442.857142857145}}, {'data': {'node_root_date': 12.0, 'node_name': 'g0001', 'mile': 6, 'node_root_id': 'g0001', 'id': 113, 'tip': 1, 'tooltip': 'character: Marine', 'node_x': 1800, 'node_y': 19028.571428571428}, 'classes': 'Marine'}, {'data': {'node_root_id': 'n6', 'node_root_date': 12.0, 'node_name': 'n6', 'mile': 7, 'id': 114, 'tooltip': 'character: Marine', 'node_x': 3150.0, 'node_y': 19028.571428571428}, 'classes': 'Marine'}, {'data': {'id': 'fake_node_129', 'fake': 1, 'node_x': 2700.0, 'node_y': 19028.571428571428}}, {'data': {'id': 'fake_node_130', 'fake': 1, 'node_x': 3600, 'node_y': 19028.571428571428}}, {'data': {'node_root_date': 12.0, 'node_name': 'g0020', 'mile': 6, 'node_root_id': 'g0020', 'id': 115, 'tip': 1, 'tooltip': 'character: Marine', 'node_x': 4200, 'node_y': 19028.571428571428}, 'classes': 'Marine'}, {'data': {'node_root_date': 12.0, 'node_name': 'g0041', 'mile': 6, 'node_root_id': 'g0041', 'id': 116, 'tip': 1, 'tooltip': 'character: Marine', 'node_x': 4800, 'node_y': 19028.571428571428}, 'classes': 'Marine'}, {'data': {'node_root_id': 'n88', 'node_root_date': 12.0, 'node_name': 'n88', 'mile': 7, 'id': 117, 'tooltip': 'character: Marine', 'node_x': 5700.0, 'node_y': 19028.571428571428}, 'classes': 'Marine'}, {'data': {'id': 'fake_node_131', 'fake': 1, 'node_x': 5400, 'node_y': 19028.571428571428}}, {'data': {'id': 'fake_node_132', 'fake': 1, 'node_x': 6000, 'node_y': 19028.571428571428}}, {'data': {'node_root_id': 'n9', 'node_root_date': 12.0, 'node_name': 'n9', 'mile': 7, 'id': 118, 'tooltip': 'character: Marine', 'node_x': 7350.0, 'node_y': 19028.571428571428}, 'classes': 'Marine'}, {'data': {'id': 'fake_node_133', 'fake': 1, 'node_x': 6900.0, 'node_y': 19028.571428571428}}, {'data': {'id': 'fake_node_134', 'fake': 1, 'node_x': 7800, 'node_y': 19028.571428571428}}, {'data': {'node_root_date': 12.0, 'node_name': 'g0022', 'mile': 6, 'node_root_id': 'g0022', 'id': 119, 'tip': 1, 'tooltip': 'character: Marine', 'node_x': 12600, 'node_y': 19028.571428571428}, 'classes': 'Marine'}, {'data': {'node_root_date': 12.0, 'node_name': 'g990073', 'mile': 6, 'node_root_id': 'g990073', 'id': 120, 'tip': 1, 'tooltip': 'character: Marine', 'node_x': 13200, 'node_y': 19028.571428571428}, 'classes': 'Marine'}, {'data': {'node_root_date': 12.0, 'node_name': 'g0044', 'mile': 6, 'node_root_id': 'g0044', 'id': 121, 'tip': 1, 'tooltip': 'character: Gut', 'node_x': 14400, 'node_y': 19028.571428571428}, 'classes': 'Gut'}, {'data': {'node_root_id': 'n1515', 'node_root_date': 12.0, 'node_name': 'n1515', 'mile': 8, 'id': 122, 'tooltip': 'character: Gut', 'node_x': 15900.0, 'node_y': 19028.571428571428}, 'classes': 'Gut'}, {'data': {'id': 'fake_node_135', 'fake': 1, 'node_x': 15300.0, 'node_y': 19028.571428571428}}, {'data': {'id': 'fake_node_136', 'fake': 1, 'node_x': 16500.0, 'node_y': 19028.571428571428}}, {'data': {'node_root_id': 'n1717', 'node_root_date': 12.0, 'node_name': 'n1717', 'mile': 7, 'id': 123, 'tooltip': 'character: Gut', 'node_x': 17700.0, 'node_y': 19028.571428571428}, 'classes': 'Gut'}, {'data': {'id': 'fake_node_137', 'fake': 1, 'node_x': 17400, 'node_y': 19028.571428571428}}, {'data': {'id': 'fake_node_138', 'fake': 1, 'node_x': 18000, 'node_y': 19028.571428571428}}, {'data': {'node_root_date': 12.0, 'node_name': 'g990078', 'mile': 6, 'node_root_id': 'g990078', 'id': 124, 'tip': 1, 'tooltip': 'character: Gut', 'node_x': 18600, 'node_y': 19028.571428571428}, 'classes': 'Gut'}, {'data': {'node_root_date': 12.0, 'node_name': 'g0011', 'mile': 6, 'node_root_id': 'g0011', 'id': 125, 'tip': 1, 'tooltip': 'character: Soda Lake', 'node_x': 25200, 'node_y': 19028.571428571428}, 'classes': 'SodaLake'}, {'data': {'node_root_date': 12.0, 'node_name': 'g0013', 'mile': 6, 'node_root_id': 'g0013', 'id': 126, 'tip': 1, 'tooltip': 'character: Soda Lake', 'node_x': 25800, 'node_y': 19028.571428571428}, 'classes': 'SodaLake'}, {'data': {'node_root_date': 12.0, 'node_name': 'g0012', 'mile': 6, 'node_root_id': 'g0012', 'id': 127, 'tip': 1, 'tooltip': 'character: Soda Lake', 'node_x': 27000, 'node_y': 19028.571428571428}, 'classes': 'SodaLake'}, {'data': {'node_root_date': 12.0, 'node_name': 'g0014', 'mile': 6, 'node_root_id': 'g0014', 'id': 128, 'tip': 1, 'tooltip': 'character: Soda Lake', 'node_x': 27600, 'node_y': 19028.571428571428}, 'classes': 'SodaLake'}, {'data': {'node_root_id': 'n66', 'node_root_date': 13.0, 'node_name': 'n66', 'mile': 8, 'id': 129, 'tooltip': 'character: Marine', 'node_x': 2700.0, 'node_y': 20614.285714285714}, 'classes': 'Marine'}, {'data': {'id': 'fake_node_139', 'fake': 1, 'node_x': 2400, 'node_y': 20614.285714285714}}, {'data': {'id': 'fake_node_140', 'fake': 1, 'node_x': 3000, 'node_y': 20614.285714285714}}, {'data': {'node_root_date': 13.0, 'node_name': 'g0039', 'mile': 7, 'node_root_id': 'g0039', 'id': 130, 'tip': 1, 'tooltip': 'character: Marine', 'node_x': 3600, 'node_y': 20614.285714285714}, 'classes': 'Marine'}, {'data': {'node_root_date': 13.0, 'node_name': 'g0026', 'mile': 7, 'node_root_id': 'g0026', 'id': 131, 'tip': 1, 'tooltip': 'character: Marine', 'node_x': 5400, 'node_y': 20614.285714285714}, 'classes': 'Marine'}, {'data': {'node_root_date': 13.0, 'node_name': 'g0055', 'mile': 7, 'node_root_id': 'g0055', 'id': 132, 'tip': 1, 'tooltip': 'character: Marine', 'node_x': 6000, 'node_y': 20614.285714285714}, 'classes': 'Marine'}, {'data': {'node_root_id': 'n99', 'node_root_date': 13.0, 'node_name': 'n99', 'mile': 8, 'id': 133, 'tooltip': 'character: Marine', 'node_x': 6900.0, 'node_y': 20614.285714285714}, 'classes': 'Marine'}, {'data': {'id': 'fake_node_141', 'fake': 1, 'node_x': 6600, 'node_y': 20614.285714285714}}, {'data': {'id': 'fake_node_142', 'fake': 1, 'node_x': 7200, 'node_y': 20614.285714285714}}, {'data': {'node_root_date': 13.0, 'node_name': 'g990077', 'mile': 7, 'node_root_id': 'g990077', 'id': 134, 'tip': 1, 'tooltip': 'character: Marine', 'node_x': 7800, 'node_y': 20614.285714285714}, 'classes': 'Marine'}, {'data': {'node_root_id': 'n16', 'node_root_date': 13.0, 'node_name': 'n16', 'mile': 8, 'id': 135, 'tooltip': 'character: Gut', 'node_x': 15300.0, 'node_y': 20614.285714285714}, 'classes': 'Gut'}, {'data': {'id': 'fake_node_143', 'fake': 1, 'node_x': 15000, 'node_y': 20614.285714285714}}, {'data': {'id': 'fake_node_144', 'fake': 1, 'node_x': 15600, 'node_y': 20614.285714285714}}, {'data': {'node_root_id': 'n1616', 'node_root_date': 13.0, 'node_name': 'n1616', 'mile': 8, 'id': 136, 'tooltip': 'character: Gut', 'node_x': 16500.0, 'node_y': 20614.285714285714}, 'classes': 'Gut'}, {'data': {'id': 'fake_node_145', 'fake': 1, 'node_x': 16200, 'node_y': 20614.285714285714}}, {'data': {'id': 'fake_node_146', 'fake': 1, 'node_x': 16800, 'node_y': 20614.285714285714}}, {'data': {'node_root_date': 13.0, 'node_name': 'g0051', 'mile': 7, 'node_root_id': 'g0051', 'id': 137, 'tip': 1, 'tooltip': 'character: Gut', 'node_x': 17400, 'node_y': 20614.285714285714}, 'classes': 'Gut'}, {'data': {'node_root_date': 13.0, 'node_name': 'g990080', 'mile': 7, 'node_root_id': 'g990080', 'id': 138, 'tip': 1, 'tooltip': 'character: Gut', 'node_x': 18000, 'node_y': 20614.285714285714}, 'classes': 'Gut'}, {'data': {'node_root_date': 14.0, 'node_name': 'g0016', 'mile': 8, 'node_root_id': 'g0016', 'id': 139, 'tip': 1, 'tooltip': 'character: Soda Lake', 'node_x': 2400, 'node_y': 22200.0}, 'classes': 'SodaLake'}, {'data': {'node_root_date': 14.0, 'node_name': 'g990065', 'mile': 8, 'node_root_id': 'g990065', 'id': 140, 'tip': 1, 'tooltip': 'character: Marine', 'node_x': 3000, 'node_y': 22200.0}, 'classes': 'Marine'}, {'data': {'node_root_date': 14.0, 'node_name': 'g0040', 'mile': 8, 'node_root_id': 'g0040', 'id': 141, 'tip': 1, 'tooltip': 'character: Marine', 'node_x': 6600, 'node_y': 22200.0}, 'classes': 'Marine'}, {'data': {'node_root_date': 14.0, 'node_name': 'g0043', 'mile': 8, 'node_root_id': 'g0043', 'id': 142, 'tip': 1, 'tooltip': 'character: Marine', 'node_x': 7200, 'node_y': 22200.0}, 'classes': 'Marine'}, {'data': {'node_root_date': 14.0, 'node_name': 'g0058', 'mile': 8, 'node_root_id': 'g0058', 'id': 143, 'tip': 1, 'tooltip': 'character: Gut', 'node_x': 15000, 'node_y': 22200.0}, 'classes': 'Gut'}, {'data': {'node_root_date': 14.0, 'node_name': 'g0059', 'mile': 8, 'node_root_id': 'g0059', 'id': 144, 'tip': 1, 'tooltip': 'character: Gut', 'node_x': 15600, 'node_y': 22200.0}, 'classes': 'Gut'}, {'data': {'node_root_date': 14.0, 'node_name': 'g990081', 'mile': 8, 'node_root_id': 'g990081', 'id': 145, 'tip': 1, 'tooltip': 'character: Gut', 'node_x': 16200, 'node_y': 22200.0}, 'classes': 'Gut'}, {'data': {'node_root_date': 14.0, 'node_name': 'g990082', 'mile': 8, 'node_root_id': 'g990082', 'id': 146, 'tip': 1, 'tooltip': 'character: Gut', 'node_x': 16800, 'node_y': 22200.0}, 'classes': 'Gut'}], 'edges': [{'data': {'source': 'fake_node_0', 'target': 0, 'edge_name': 0.0, 'mile': 0}}, {'data': {'source': 0, 'target': 'fake_node_1', 'fake': 1, 'edge_color': '#fdc086', 'mile': 0}}, {'data': {'source': 'fake_node_1', 'target': 1, 'edge_name': 1.0, 'edge_color': '#fdc086', 'mile': 0}}, {'data': {'source': 0, 'target': 'fake_node_2', 'fake': 1, 'edge_color': '#fdc086', 'mile': 0}}, {'data': {'source': 'fake_node_2', 'target': 2, 'edge_name': 1.0, 'edge_color': '#fdc086', 'mile': 0}}, {'data': {'source': 1, 'target': 'fake_node_3', 'fake': 1, 'mile': 0}}, {'data': {'source': 'fake_node_3', 'target': 3, 'edge_name': 1.0, 'mile': 0}}, {'data': {'source': 1, 'target': 'fake_node_4', 'fake': 1, 'edge_color': '#fdc086', 'mile': 1}}, {'data': {'source': 'fake_node_4', 'target': 4, 'edge_name': 1.0, 'edge_color': '#fdc086', 'mile': 1}}, {'data': {'source': 2, 'target': 'fake_node_5', 'fake': 1, 'edge_color': '#fdc086', 'mile': 0}}, {'data': {'source': 'fake_node_5', 'target': 5, 'edge_name': 1.0, 'edge_color': '#fdc086', 'mile': 0}}, {'data': {'source': 2, 'target': 'fake_node_6', 'fake': 1, 'edge_color': '#fdc086', 'mile': 1}}, {'data': {'source': 'fake_node_6', 'target': 6, 'edge_name': 1.0, 'edge_color': '#fdc086', 'mile': 1}}, {'data': {'source': 4, 'target': 'fake_node_7', 'fake': 1, 'edge_color': '#fdc086', 'mile': 1}}, {'data': {'source': 'fake_node_7', 'target': 7, 'edge_name': 1.0, 'edge_color': '#fdc086', 'mile': 1}}, {'data': {'source': 4, 'target': 'fake_node_8', 'fake': 1, 'mile': 1}}, {'data': {'source': 'fake_node_8', 'target': 8, 'edge_name': 1.0, 'mile': 1}}, {'data': {'source': 6, 'target': 'fake_node_9', 'fake': 1, 'edge_color': '#fdc086', 'mile': 1}}, {'data': {'source': 'fake_node_9', 'target': 9, 'edge_name': 1.0, 'edge_color': '#fdc086', 'mile': 1}}, {'data': {'source': 6, 'target': 'fake_node_10', 'fake': 1, 'mile': 1}}, {'data': {'source': 'fake_node_10', 'target': 10, 'edge_name': 1.0, 'mile': 1}}, {'data': {'source': 7, 'target': 'fake_node_11', 'fake': 1, 'edge_color': '#fdc086', 'mile': 1}}, {'data': {'source': 'fake_node_11', 'target': 11, 'edge_name': 1.0, 'edge_color': '#fdc086', 'mile': 1}}, {'data': {'source': 7, 'target': 'fake_node_12', 'fake': 1, 'edge_color': '#fdc086', 'mile': 1}}, {'data': {'source': 'fake_node_12', 'target': 12, 'edge_name': 1.0, 'edge_color': '#fdc086', 'mile': 1}}, {'data': {'source': 8, 'target': 'fake_node_13', 'fake': 1, 'mile': 1}}, {'data': {'source': 'fake_node_13', 'target': 13, 'edge_name': 1.0, 'mile': 1}}, {'data': {'source': 8, 'target': 'fake_node_14', 'fake': 1, 'mile': 1}}, {'data': {'source': 'fake_node_14', 'target': 14, 'edge_name': 1.0, 'mile': 1}}, {'data': {'source': 9, 'target': 'fake_node_15', 'fake': 1, 'mile': 1}}, {'data': {'source': 'fake_node_15', 'target': 15, 'edge_name': 1.0, 'mile': 1}}, {'data': {'source': 9, 'target': 'fake_node_16', 'fake': 1, 'edge_color': '#fdc086', 'mile': 1}}, {'data': {'source': 'fake_node_16', 'target': 16, 'edge_name': 1.0, 'edge_color': '#fdc086', 'mile': 1}}, {'data': {'source': 13, 'target': 'fake_node_17', 'fake': 1, 'mile': 1}}, {'data': {'source': 'fake_node_17', 'target': 17, 'edge_name': 1.0, 'mile': 1}}, {'data': {'source': 13, 'target': 'fake_node_18', 'fake': 1, 'mile': 1}}, {'data': {'source': 'fake_node_18', 'target': 18, 'edge_name': 1.0, 'mile': 1}}, {'data': {'source': 14, 'target': 'fake_node_19', 'fake': 1, 'mile': 1}}, {'data': {'source': 'fake_node_19', 'target': 19, 'edge_name': 1.0, 'mile': 1}}, {'data': {'source': 14, 'target': 'fake_node_20', 'fake': 1, 'mile': 1}}, {'data': {'source': 'fake_node_20', 'target': 20, 'edge_name': 1.0, 'mile': 1}}, {'data': {'source': 15, 'target': 'fake_node_21', 'fake': 1, 'mile': 1}}, {'data': {'source': 'fake_node_21', 'target': 21, 'edge_name': 1.0, 'mile': 1}}, {'data': {'source': 15, 'target': 'fake_node_22', 'fake': 1, 'mile': 1}}, {'data': {'source': 'fake_node_22', 'target': 22, 'edge_name': 1.0, 'mile': 1}}, {'data': {'source': 17, 'target': 'fake_node_23', 'fake': 1, 'edge_color': '#ffff99', 'mile': 3}}, {'data': {'source': 'fake_node_23', 'target': 23, 'edge_name': 1.0, 'edge_color': '#ffff99', 'mile': 3}}, {'data': {'source': 17, 'target': 'fake_node_24', 'fake': 1, 'edge_color': '#ffff99', 'mile': 1}}, {'data': {'source': 'fake_node_24', 'target': 24, 'edge_name': 1.0, 'edge_color': '#ffff99', 'mile': 1}}, {'data': {'source': 18, 'target': 'fake_node_25', 'fake': 1, 'edge_color': '#386cb0', 'mile': 1}}, {'data': {'source': 'fake_node_25', 'target': 25, 'edge_name': 1.0, 'edge_color': '#386cb0', 'mile': 1}}, {'data': {'source': 18, 'target': 'fake_node_26', 'fake': 1, 'edge_color': '#386cb0', 'mile': 1}}, {'data': {'source': 'fake_node_26', 'target': 26, 'edge_name': 1.0, 'edge_color': '#386cb0', 'mile': 1}}, {'data': {'source': 19, 'target': 'fake_node_27', 'fake': 1, 'edge_color': '#7fc97f', 'mile': 1}}, {'data': {'source': 'fake_node_27', 'target': 27, 'edge_name': 1.0, 'edge_color': '#7fc97f', 'mile': 1}}, {'data': {'source': 19, 'target': 'fake_node_28', 'fake': 1, 'edge_color': '#7fc97f', 'mile': 1}}, {'data': {'source': 'fake_node_28', 'target': 28, 'edge_name': 1.0, 'edge_color': '#7fc97f', 'mile': 1}}, {'data': {'source': 20, 'target': 'fake_node_29', 'fake': 1, 'mile': 1}}, {'data': {'source': 'fake_node_29', 'target': 29, 'edge_name': 1.0, 'mile': 1}}, {'data': {'source': 20, 'target': 'fake_node_30', 'fake': 1, 'mile': 3}}, {'data': {'source': 'fake_node_30', 'target': 30, 'edge_name': 1.0, 'mile': 3}}, {'data': {'source': 23, 'target': 'fake_node_31', 'fake': 1, 'edge_color': '#ffff99', 'mile': 4}}, {'data': {'source': 'fake_node_31', 'target': 31, 'edge_name': 1.0, 'edge_color': '#ffff99', 'mile': 4}}, {'data': {'source': 23, 'target': 'fake_node_32', 'fake': 1, 'edge_color': '#ffff99', 'mile': 3}}, {'data': {'source': 'fake_node_32', 'target': 32, 'edge_name': 1.0, 'edge_color': '#ffff99', 'mile': 3}}, {'data': {'source': 24, 'target': 'fake_node_33', 'fake': 1, 'edge_color': '#ffff99', 'mile': 2}}, {'data': {'source': 'fake_node_33', 'target': 33, 'edge_name': 1.0, 'edge_color': '#ffff99', 'mile': 2}}, {'data': {'source': 24, 'target': 'fake_node_34', 'fake': 1, 'edge_color': '#ffff99', 'mile': 1}}, {'data': {'source': 'fake_node_34', 'target': 34, 'edge_name': 1.0, 'edge_color': '#ffff99', 'mile': 1}}, {'data': {'source': 25, 'target': 'fake_node_35', 'fake': 1, 'edge_color': '#386cb0', 'mile': 3}}, {'data': {'source': 'fake_node_35', 'target': 35, 'edge_name': 1.0, 'edge_color': '#386cb0', 'mile': 3}}, {'data': {'source': 25, 'target': 'fake_node_36', 'fake': 1, 'edge_color': '#386cb0', 'mile': 1}}, {'data': {'source': 'fake_node_36', 'target': 36, 'edge_name': 1.0, 'edge_color': '#386cb0', 'mile': 1}}, {'data': {'source': 26, 'target': 'fake_node_37', 'fake': 1, 'edge_color': '#386cb0', 'mile': 1}}, {'data': {'source': 'fake_node_37', 'target': 37, 'edge_name': 1.0, 'edge_color': '#386cb0', 'mile': 1}}, {'data': {'source': 26, 'target': 'fake_node_38', 'fake': 1, 'mile': 2}}, {'data': {'source': 'fake_node_38', 'target': 38, 'edge_name': 1.0, 'mile': 2}}, {'data': {'source': 27, 'target': 'fake_node_39', 'fake': 1, 'edge_color': '#7fc97f', 'mile': 1}}, {'data': {'source': 'fake_node_39', 'target': 39, 'edge_name': 1.0, 'edge_color': '#7fc97f', 'mile': 1}}, {'data': {'source': 27, 'target': 'fake_node_40', 'fake': 1, 'edge_color': '#7fc97f', 'mile': 1}}, {'data': {'source': 'fake_node_40', 'target': 40, 'edge_name': 1.0, 'edge_color': '#7fc97f', 'mile': 1}}, {'data': {'source': 28, 'target': 'fake_node_41', 'fake': 1, 'mile': 1}}, {'data': {'source': 'fake_node_41', 'target': 41, 'edge_name': 1.0, 'mile': 1}}, {'data': {'source': 28, 'target': 'fake_node_42', 'fake': 1, 'edge_color': '#7fc97f', 'mile': 1}}, {'data': {'source': 'fake_node_42', 'target': 42, 'edge_name': 1.0, 'edge_color': '#7fc97f', 'mile': 1}}, {'data': {'source': 30, 'target': 'fake_node_43', 'fake': 1, 'mile': 3}}, {'data': {'source': 'fake_node_43', 'target': 43, 'edge_name': 1.0, 'mile': 3}}, {'data': {'source': 30, 'target': 'fake_node_44', 'fake': 1, 'mile': 3}}, {'data': {'source': 'fake_node_44', 'target': 44, 'edge_name': 1.0, 'mile': 3}}, {'data': {'source': 31, 'target': 'fake_node_45', 'fake': 1, 'edge_color': '#ffff99', 'mile': 4}}, {'data': {'source': 'fake_node_45', 'target': 45, 'edge_name': 1.0, 'edge_color': '#ffff99', 'mile': 4}}, {'data': {'source': 31, 'target': 'fake_node_46', 'fake': 1, 'edge_color': '#ffff99', 'mile': 4}}, {'data': {'source': 'fake_node_46', 'target': 46, 'edge_name': 1.0, 'edge_color': '#ffff99', 'mile': 4}}, {'data': {'source': 32, 'target': 'fake_node_47', 'fake': 1, 'mile': 3}}, {'data': {'source': 'fake_node_47', 'target': 47, 'edge_name': 1.0, 'mile': 3}}, {'data': {'source': 32, 'target': 'fake_node_48', 'fake': 1, 'edge_color': '#ffff99', 'mile': 3}}, {'data': {'source': 'fake_node_48', 'target': 48, 'edge_name': 1.0, 'edge_color': '#ffff99', 'mile': 3}}, {'data': {'source': 33, 'target': 'fake_node_49', 'fake': 1, 'edge_color': '#ffff99', 'mile': 2}}, {'data': {'source': 'fake_node_49', 'target': 49, 'edge_name': 1.0, 'edge_color': '#ffff99', 'mile': 2}}, {'data': {'source': 33, 'target': 'fake_node_50', 'fake': 1, 'edge_color': '#ffff99', 'mile': 2}}, {'data': {'source': 'fake_node_50', 'target': 50, 'edge_name': 1.0, 'edge_color': '#ffff99', 'mile': 2}}, {'data': {'source': 35, 'target': 'fake_node_51', 'fake': 1, 'edge_color': '#386cb0', 'mile': 3}}, {'data': {'source': 'fake_node_51', 'target': 51, 'edge_name': 1.0, 'edge_color': '#386cb0', 'mile': 3}}, {'data': {'source': 35, 'target': 'fake_node_52', 'fake': 1, 'edge_color': '#386cb0', 'mile': 3}}, {'data': {'source': 'fake_node_52', 'target': 52, 'edge_name': 1.0, 'edge_color': '#386cb0', 'mile': 3}}, {'data': {'source': 38, 'target': 'fake_node_53', 'fake': 1, 'edge_color': '#7fc97f', 'mile': 3}}, {'data': {'source': 'fake_node_53', 'target': 53, 'edge_name': 1.0, 'edge_color': '#7fc97f', 'mile': 3}}, {'data': {'source': 38, 'target': 'fake_node_54', 'fake': 1, 'edge_color': '#7fc97f', 'mile': 2}}, {'data': {'source': 'fake_node_54', 'target': 54, 'edge_name': 1.0, 'edge_color': '#7fc97f', 'mile': 2}}, {'data': {'source': 43, 'target': 'fake_node_55', 'fake': 1, 'mile': 3}}, {'data': {'source': 'fake_node_55', 'target': 55, 'edge_name': 1.0, 'mile': 3}}, {'data': {'source': 43, 'target': 'fake_node_56', 'fake': 1, 'mile': 3}}, {'data': {'source': 'fake_node_56', 'target': 56, 'edge_name': 1.0, 'mile': 3}}, {'data': {'source': 44, 'target': 'fake_node_57', 'fake': 1, 'mile': 3}}, {'data': {'source': 'fake_node_57', 'target': 57, 'edge_name': 1.0, 'mile': 3}}, {'data': {'source': 44, 'target': 'fake_node_58', 'fake': 1, 'mile': 3}}, {'data': {'source': 'fake_node_58', 'target': 58, 'edge_name': 1.0, 'mile': 3}}, {'data': {'source': 45, 'target': 'fake_node_59', 'fake': 1, 'edge_color': '#ffff99', 'mile': 5}}, {'data': {'source': 'fake_node_59', 'target': 59, 'edge_name': 1.0, 'edge_color': '#ffff99', 'mile': 5}}, {'data': {'source': 45, 'target': 'fake_node_60', 'fake': 1, 'edge_color': '#ffff99', 'mile': 4}}, {'data': {'source': 'fake_node_60', 'target': 60, 'edge_name': 1.0, 'edge_color': '#ffff99', 'mile': 4}}, {'data': {'source': 46, 'target': 'fake_node_61', 'fake': 1, 'edge_color': '#ffff99', 'mile': 4}}, {'data': {'source': 'fake_node_61', 'target': 61, 'edge_name': 1.0, 'edge_color': '#ffff99', 'mile': 4}}, {'data': {'source': 46, 'target': 'fake_node_62', 'fake': 1, 'edge_color': '#ffff99', 'mile': 5}}, {'data': {'source': 'fake_node_62', 'target': 62, 'edge_name': 1.0, 'edge_color': '#ffff99', 'mile': 5}}, {'data': {'source': 47, 'target': 'fake_node_63', 'fake': 1, 'mile': 4}}, {'data': {'source': 'fake_node_63', 'target': 63, 'edge_name': 1.0, 'mile': 4}}, {'data': {'source': 47, 'target': 'fake_node_64', 'fake': 1, 'mile': 3}}, {'data': {'source': 'fake_node_64', 'target': 64, 'edge_name': 1.0, 'mile': 3}}, {'data': {'source': 48, 'target': 'fake_node_65', 'fake': 1, 'edge_color': '#ffff99', 'mile': 4}}, {'data': {'source': 'fake_node_65', 'target': 65, 'edge_name': 1.0, 'edge_color': '#ffff99', 'mile': 4}}, {'data': {'source': 48, 'target': 'fake_node_66', 'fake': 1, 'edge_color': '#ffff99', 'mile': 3}}, {'data': {'source': 'fake_node_66', 'target': 66, 'edge_name': 1.0, 'edge_color': '#ffff99', 'mile': 3}}, {'data': {'source': 51, 'target': 'fake_node_67', 'fake': 1, 'edge_color': '#386cb0', 'mile': 5}}, {'data': {'source': 'fake_node_67', 'target': 67, 'edge_name': 1.0, 'edge_color': '#386cb0', 'mile': 5}}, {'data': {'source': 51, 'target': 'fake_node_68', 'fake': 1, 'edge_color': '#386cb0', 'mile': 3}}, {'data': {'source': 'fake_node_68', 'target': 68, 'edge_name': 1.0, 'edge_color': '#386cb0', 'mile': 3}}, {'data': {'source': 52, 'target': 'fake_node_69', 'fake': 1, 'edge_color': '#386cb0', 'mile': 4}}, {'data': {'source': 'fake_node_69', 'target': 69, 'edge_name': 1.0, 'edge_color': '#386cb0', 'mile': 4}}, {'data': {'source': 52, 'target': 'fake_node_70', 'fake': 1, 'edge_color': '#386cb0', 'mile': 3}}, {'data': {'source': 'fake_node_70', 'target': 70, 'edge_name': 1.0, 'edge_color': '#386cb0', 'mile': 3}}, {'data': {'source': 53, 'target': 'fake_node_71', 'fake': 1, 'mile': 3}}, {'data': {'source': 'fake_node_71', 'target': 71, 'edge_name': 1.0, 'mile': 3}}, {'data': {'source': 53, 'target': 'fake_node_72', 'fake': 1, 'edge_color': '#7fc97f', 'mile': 3}}, {'data': {'source': 'fake_node_72', 'target': 72, 'edge_name': 1.0, 'edge_color': '#7fc97f', 'mile': 3}}, {'data': {'source': 55, 'target': 'fake_node_73', 'fake': 1, 'edge_color': '#beaed4', 'mile': 3}}, {'data': {'source': 'fake_node_73', 'target': 73, 'edge_name': 1.0, 'edge_color': '#beaed4', 'mile': 3}}, {'data': {'source': 55, 'target': 'fake_node_74', 'fake': 1, 'edge_color': '#beaed4', 'mile': 3}}, {'data': {'source': 'fake_node_74', 'target': 74, 'edge_name': 1.0, 'edge_color': '#beaed4', 'mile': 3}}, {'data': {'source': 56, 'target': 'fake_node_75', 'fake': 1, 'mile': 3}}, {'data': {'source': 'fake_node_75', 'target': 75, 'edge_name': 1.0, 'mile': 3}}, {'data': {'source': 56, 'target': 'fake_node_76', 'fake': 1, 'mile': 3}}, {'data': {'source': 'fake_node_76', 'target': 76, 'edge_name': 1.0, 'mile': 3}}, {'data': {'source': 57, 'target': 'fake_node_77', 'fake': 1, 'edge_color': '#f0027f', 'mile': 3}}, {'data': {'source': 'fake_node_77', 'target': 77, 'edge_name': 1.0, 'edge_color': '#f0027f', 'mile': 3}}, {'data': {'source': 57, 'target': 'fake_node_78', 'fake': 1, 'edge_color': '#f0027f', 'mile': 3}}, {'data': {'source': 'fake_node_78', 'target': 78, 'edge_name': 1.0, 'edge_color': '#f0027f', 'mile': 3}}, {'data': {'source': 58, 'target': 'fake_node_79', 'fake': 1, 'mile': 3}}, {'data': {'source': 'fake_node_79', 'target': 79, 'edge_name': 1.0, 'mile': 3}}, {'data': {'source': 58, 'target': 'fake_node_80', 'fake': 1, 'mile': 3}}, {'data': {'source': 'fake_node_80', 'target': 80, 'edge_name': 1.0, 'mile': 3}}, {'data': {'source': 59, 'target': 'fake_node_81', 'fake': 1, 'edge_color': '#ffff99', 'mile': 6}}, {'data': {'source': 'fake_node_81', 'target': 81, 'edge_name': 1.0, 'edge_color': '#ffff99', 'mile': 6}}, {'data': {'source': 59, 'target': 'fake_node_82', 'fake': 1, 'edge_color': '#ffff99', 'mile': 5}}, {'data': {'source': 'fake_node_82', 'target': 82, 'edge_name': 1.0, 'edge_color': '#ffff99', 'mile': 5}}, {'data': {'source': 60, 'target': 'fake_node_83', 'fake': 1, 'edge_color': '#ffff99', 'mile': 5}}, {'data': {'source': 'fake_node_83', 'target': 83, 'edge_name': 1.0, 'edge_color': '#ffff99', 'mile': 5}}, {'data': {'source': 60, 'target': 'fake_node_84', 'fake': 1, 'edge_color': '#ffff99', 'mile': 4}}, {'data': {'source': 'fake_node_84', 'target': 84, 'edge_name': 1.0, 'edge_color': '#ffff99', 'mile': 4}}, {'data': {'source': 61, 'target': 'fake_node_85', 'fake': 1, 'edge_color': '#ffff99', 'mile': 5}}, {'data': {'source': 'fake_node_85', 'target': 85, 'edge_name': 1.0, 'edge_color': '#ffff99', 'mile': 5}}, {'data': {'source': 61, 'target': 'fake_node_86', 'fake': 1, 'edge_color': '#ffff99', 'mile': 4}}, {'data': {'source': 'fake_node_86', 'target': 86, 'edge_name': 1.0, 'edge_color': '#ffff99', 'mile': 4}}, {'data': {'source': 62, 'target': 'fake_node_87', 'fake': 1, 'edge_color': '#ffff99', 'mile': 5}}, {'data': {'source': 'fake_node_87', 'target': 87, 'edge_name': 1.0, 'edge_color': '#ffff99', 'mile': 5}}, {'data': {'source': 62, 'target': 'fake_node_88', 'fake': 1, 'mile': 6}}, {'data': {'source': 'fake_node_88', 'target': 88, 'edge_name': 1.0, 'mile': 6}}, {'data': {'source': 63, 'target': 'fake_node_89', 'fake': 1, 'mile': 4}}, {'data': {'source': 'fake_node_89', 'target': 89, 'edge_name': 1.0, 'mile': 4}}, {'data': {'source': 63, 'target': 'fake_node_90', 'fake': 1, 'mile': 4}}, {'data': {'source': 'fake_node_90', 'target': 90, 'edge_name': 1.0, 'mile': 4}}, {'data': {'source': 65, 'target': 'fake_node_91', 'fake': 1, 'edge_color': '#ffff99', 'mile': 4}}, {'data': {'source': 'fake_node_91', 'target': 91, 'edge_name': 1.0, 'edge_color': '#ffff99', 'mile': 4}}, {'data': {'source': 65, 'target': 'fake_node_92', 'fake': 1, 'edge_color': '#ffff99', 'mile': 4}}, {'data': {'source': 'fake_node_92', 'target': 92, 'edge_name': 1.0, 'edge_color': '#ffff99', 'mile': 4}}, {'data': {'source': 67, 'target': 'fake_node_93', 'fake': 1, 'edge_color': '#386cb0', 'mile': 5}}, {'data': {'source': 'fake_node_93', 'target': 93, 'edge_name': 1.0, 'edge_color': '#386cb0', 'mile': 5}}, {'data': {'source': 67, 'target': 'fake_node_94', 'fake': 1, 'edge_color': '#386cb0', 'mile': 5}}, {'data': {'source': 'fake_node_94', 'target': 94, 'edge_name': 1.0, 'edge_color': '#386cb0', 'mile': 5}}, {'data': {'source': 69, 'target': 'fake_node_95', 'fake': 1, 'edge_color': '#386cb0', 'mile': 4}}, {'data': {'source': 'fake_node_95', 'target': 95, 'edge_name': 1.0, 'edge_color': '#386cb0', 'mile': 4}}, {'data': {'source': 69, 'target': 'fake_node_96', 'fake': 1, 'edge_color': '#386cb0', 'mile': 4}}, {'data': {'source': 'fake_node_96', 'target': 96, 'edge_name': 1.0, 'edge_color': '#386cb0', 'mile': 4}}, {'data': {'source': 81, 'target': 'fake_node_97', 'fake': 1, 'edge_color': '#ffff99', 'mile': 6}}, {'data': {'source': 'fake_node_97', 'target': 97, 'edge_name': 1.0, 'edge_color': '#ffff99', 'mile': 6}}, {'data': {'source': 81, 'target': 'fake_node_98', 'fake': 1, 'edge_color': '#ffff99', 'mile': 6}}, {'data': {'source': 'fake_node_98', 'target': 98, 'edge_name': 1.0, 'edge_color': '#ffff99', 'mile': 6}}, {'data': {'source': 82, 'target': 'fake_node_99', 'fake': 1, 'edge_color': '#ffff99', 'mile': 7}}, {'data': {'source': 'fake_node_99', 'target': 99, 'edge_name': 1.0, 'edge_color': '#ffff99', 'mile': 7}}, {'data': {'source': 82, 'target': 'fake_node_100', 'fake': 1, 'edge_color': '#ffff99', 'mile': 5}}, {'data': {'source': 'fake_node_100', 'target': 100, 'edge_name': 1.0, 'edge_color': '#ffff99', 'mile': 5}}, {'data': {'source': 83, 'target': 'fake_node_101', 'fake': 1, 'edge_color': '#ffff99', 'mile': 5}}, {'data': {'source': 'fake_node_101', 'target': 101, 'edge_name': 1.0, 'edge_color': '#ffff99', 'mile': 5}}, {'data': {'source': 83, 'target': 'fake_node_102', 'fake': 1, 'edge_color': '#ffff99', 'mile': 5}}, {'data': {'source': 'fake_node_102', 'target': 102, 'edge_name': 1.0, 'edge_color': '#ffff99', 'mile': 5}}, {'data': {'source': 85, 'target': 'fake_node_103', 'fake': 1, 'edge_color': '#ffff99', 'mile': 5}}, {'data': {'source': 'fake_node_103', 'target': 103, 'edge_name': 1.0, 'edge_color': '#ffff99', 'mile': 5}}, {'data': {'source': 85, 'target': 'fake_node_104', 'fake': 1, 'edge_color': '#ffff99', 'mile': 5}}, {'data': {'source': 'fake_node_104', 'target': 104, 'edge_name': 1.0, 'edge_color': '#ffff99', 'mile': 5}}, {'data': {'source': 87, 'target': 'fake_node_105', 'fake': 1, 'edge_color': '#ffff99', 'mile': 6}}, {'data': {'source': 'fake_node_105', 'target': 105, 'edge_name': 1.0, 'edge_color': '#ffff99', 'mile': 6}}, {'data': {'source': 87, 'target': 'fake_node_106', 'fake': 1, 'edge_color': '#ffff99', 'mile': 5}}, {'data': {'source': 'fake_node_106', 'target': 106, 'edge_name': 1.0, 'edge_color': '#ffff99', 'mile': 5}}, {'data': {'source': 88, 'target': 'fake_node_107', 'fake': 1, 'edge_color': '#beaed4', 'mile': 6}}, {'data': {'source': 'fake_node_107', 'target': 107, 'edge_name': 1.0, 'edge_color': '#beaed4', 'mile': 6}}, {'data': {'source': 88, 'target': 'fake_node_108', 'fake': 1, 'edge_color': '#beaed4', 'mile': 6}}, {'data': {'source': 'fake_node_108', 'target': 108, 'edge_name': 1.0, 'edge_color': '#beaed4', 'mile': 6}}, {'data': {'source': 93, 'target': 'fake_node_109', 'fake': 1, 'edge_color': '#386cb0', 'mile': 5}}, {'data': {'source': 'fake_node_109', 'target': 109, 'edge_name': 1.0, 'edge_color': '#386cb0', 'mile': 5}}, {'data': {'source': 93, 'target': 'fake_node_110', 'fake': 1, 'edge_color': '#386cb0', 'mile': 6}}, {'data': {'source': 'fake_node_110', 'target': 110, 'edge_name': 1.0, 'edge_color': '#386cb0', 'mile': 6}}, {'data': {'source': 94, 'target': 'fake_node_111', 'fake': 1, 'edge_color': '#386cb0', 'mile': 5}}, {'data': {'source': 'fake_node_111', 'target': 111, 'edge_name': 1.0, 'edge_color': '#386cb0', 'mile': 5}}, {'data': {'source': 94, 'target': 'fake_node_112', 'fake': 1, 'edge_color': '#386cb0', 'mile': 6}}, {'data': {'source': 'fake_node_112', 'target': 112, 'edge_name': 1.0, 'edge_color': '#386cb0', 'mile': 6}}, {'data': {'source': 97, 'target': 'fake_node_113', 'fake': 1, 'edge_color': '#ffff99', 'mile': 6}}, {'data': {'source': 'fake_node_113', 'target': 113, 'edge_name': 1.0, 'edge_color': '#ffff99', 'mile': 6}}, {'data': {'source': 97, 'target': 'fake_node_114', 'fake': 1, 'edge_color': '#ffff99', 'mile': 7}}, {'data': {'source': 'fake_node_114', 'target': 114, 'edge_name': 1.0, 'edge_color': '#ffff99', 'mile': 7}}, {'data': {'source': 98, 'target': 'fake_node_115', 'fake': 1, 'edge_color': '#ffff99', 'mile': 6}}, {'data': {'source': 'fake_node_115', 'target': 115, 'edge_name': 1.0, 'edge_color': '#ffff99', 'mile': 6}}, {'data': {'source': 98, 'target': 'fake_node_116', 'fake': 1, 'edge_color': '#ffff99', 'mile': 6}}, {'data': {'source': 'fake_node_116', 'target': 116, 'edge_name': 1.0, 'edge_color': '#ffff99', 'mile': 6}}, {'data': {'source': 99, 'target': 'fake_node_117', 'fake': 1, 'edge_color': '#ffff99', 'mile': 7}}, {'data': {'source': 'fake_node_117', 'target': 117, 'edge_name': 1.0, 'edge_color': '#ffff99', 'mile': 7}}, {'data': {'source': 99, 'target': 'fake_node_118', 'fake': 1, 'edge_color': '#ffff99', 'mile': 7}}, {'data': {'source': 'fake_node_118', 'target': 118, 'edge_name': 1.0, 'edge_color': '#ffff99', 'mile': 7}}, {'data': {'source': 105, 'target': 'fake_node_119', 'fake': 1, 'edge_color': '#ffff99', 'mile': 6}}, {'data': {'source': 'fake_node_119', 'target': 119, 'edge_name': 1.0, 'edge_color': '#ffff99', 'mile': 6}}, {'data': {'source': 105, 'target': 'fake_node_120', 'fake': 1, 'edge_color': '#ffff99', 'mile': 6}}, {'data': {'source': 'fake_node_120', 'target': 120, 'edge_name': 1.0, 'edge_color': '#ffff99', 'mile': 6}}, {'data': {'source': 107, 'target': 'fake_node_121', 'fake': 1, 'edge_color': '#beaed4', 'mile': 6}}, {'data': {'source': 'fake_node_121', 'target': 121, 'edge_name': 1.0, 'edge_color': '#beaed4', 'mile': 6}}, {'data': {'source': 107, 'target': 'fake_node_122', 'fake': 1, 'edge_color': '#beaed4', 'mile': 8}}, {'data': {'source': 'fake_node_122', 'target': 122, 'edge_name': 1.0, 'edge_color': '#beaed4', 'mile': 8}}, {'data': {'source': 108, 'target': 'fake_node_123', 'fake': 1, 'edge_color': '#beaed4', 'mile': 7}}, {'data': {'source': 'fake_node_123', 'target': 123, 'edge_name': 1.0, 'edge_color': '#beaed4', 'mile': 7}}, {'data': {'source': 108, 'target': 'fake_node_124', 'fake': 1, 'edge_color': '#beaed4', 'mile': 6}}, {'data': {'source': 'fake_node_124', 'target': 124, 'edge_name': 1.0, 'edge_color': '#beaed4', 'mile': 6}}, {'data': {'source': 110, 'target': 'fake_node_125', 'fake': 1, 'edge_color': '#386cb0', 'mile': 6}}, {'data': {'source': 'fake_node_125', 'target': 125, 'edge_name': 1.0, 'edge_color': '#386cb0', 'mile': 6}}, {'data': {'source': 110, 'target': 'fake_node_126', 'fake': 1, 'edge_color': '#386cb0', 'mile': 6}}, {'data': {'source': 'fake_node_126', 'target': 126, 'edge_name': 1.0, 'edge_color': '#386cb0', 'mile': 6}}, {'data': {'source': 112, 'target': 'fake_node_127', 'fake': 1, 'edge_color': '#386cb0', 'mile': 6}}, {'data': {'source': 'fake_node_127', 'target': 127, 'edge_name': 1.0, 'edge_color': '#386cb0', 'mile': 6}}, {'data': {'source': 112, 'target': 'fake_node_128', 'fake': 1, 'edge_color': '#386cb0', 'mile': 6}}, {'data': {'source': 'fake_node_128', 'target': 128, 'edge_name': 1.0, 'edge_color': '#386cb0', 'mile': 6}}, {'data': {'source': 114, 'target': 'fake_node_129', 'fake': 1, 'edge_color': '#ffff99', 'mile': 8}}, {'data': {'source': 'fake_node_129', 'target': 129, 'edge_name': 1.0, 'edge_color': '#ffff99', 'mile': 8}}, {'data': {'source': 114, 'target': 'fake_node_130', 'fake': 1, 'edge_color': '#ffff99', 'mile': 7}}, {'data': {'source': 'fake_node_130', 'target': 130, 'edge_name': 1.0, 'edge_color': '#ffff99', 'mile': 7}}, {'data': {'source': 117, 'target': 'fake_node_131', 'fake': 1, 'edge_color': '#ffff99', 'mile': 7}}, {'data': {'source': 'fake_node_131', 'target': 131, 'edge_name': 1.0, 'edge_color': '#ffff99', 'mile': 7}}, {'data': {'source': 117, 'target': 'fake_node_132', 'fake': 1, 'edge_color': '#ffff99', 'mile': 7}}, {'data': {'source': 'fake_node_132', 'target': 132, 'edge_name': 1.0, 'edge_color': '#ffff99', 'mile': 7}}, {'data': {'source': 118, 'target': 'fake_node_133', 'fake': 1, 'edge_color': '#ffff99', 'mile': 8}}, {'data': {'source': 'fake_node_133', 'target': 133, 'edge_name': 1.0, 'edge_color': '#ffff99', 'mile': 8}}, {'data': {'source': 118, 'target': 'fake_node_134', 'fake': 1, 'edge_color': '#ffff99', 'mile': 7}}, {'data': {'source': 'fake_node_134', 'target': 134, 'edge_name': 1.0, 'edge_color': '#ffff99', 'mile': 7}}, {'data': {'source': 122, 'target': 'fake_node_135', 'fake': 1, 'edge_color': '#beaed4', 'mile': 8}}, {'data': {'source': 'fake_node_135', 'target': 135, 'edge_name': 1.0, 'edge_color': '#beaed4', 'mile': 8}}, {'data': {'source': 122, 'target': 'fake_node_136', 'fake': 1, 'edge_color': '#beaed4', 'mile': 8}}, {'data': {'source': 'fake_node_136', 'target': 136, 'edge_name': 1.0, 'edge_color': '#beaed4', 'mile': 8}}, {'data': {'source': 123, 'target': 'fake_node_137', 'fake': 1, 'edge_color': '#beaed4', 'mile': 7}}, {'data': {'source': 'fake_node_137', 'target': 137, 'edge_name': 1.0, 'edge_color': '#beaed4', 'mile': 7}}, {'data': {'source': 123, 'target': 'fake_node_138', 'fake': 1, 'edge_color': '#beaed4', 'mile': 7}}, {'data': {'source': 'fake_node_138', 'target': 138, 'edge_name': 1.0, 'edge_color': '#beaed4', 'mile': 7}}, {'data': {'source': 129, 'target': 'fake_node_139', 'fake': 1, 'mile': 8}}, {'data': {'source': 'fake_node_139', 'target': 139, 'edge_name': 1.0, 'mile': 8}}, {'data': {'source': 129, 'target': 'fake_node_140', 'fake': 1, 'edge_color': '#ffff99', 'mile': 8}}, {'data': {'source': 'fake_node_140', 'target': 140, 'edge_name': 1.0, 'edge_color': '#ffff99', 'mile': 8}}, {'data': {'source': 133, 'target': 'fake_node_141', 'fake': 1, 'edge_color': '#ffff99', 'mile': 8}}, {'data': {'source': 'fake_node_141', 'target': 141, 'edge_name': 1.0, 'edge_color': '#ffff99', 'mile': 8}}, {'data': {'source': 133, 'target': 'fake_node_142', 'fake': 1, 'edge_color': '#ffff99', 'mile': 8}}, {'data': {'source': 'fake_node_142', 'target': 142, 'edge_name': 1.0, 'edge_color': '#ffff99', 'mile': 8}}, {'data': {'source': 135, 'target': 'fake_node_143', 'fake': 1, 'edge_color': '#beaed4', 'mile': 8}}, {'data': {'source': 'fake_node_143', 'target': 143, 'edge_name': 1.0, 'edge_color': '#beaed4', 'mile': 8}}, {'data': {'source': 135, 'target': 'fake_node_144', 'fake': 1, 'edge_color': '#beaed4', 'mile': 8}}, {'data': {'source': 'fake_node_144', 'target': 144, 'edge_name': 1.0, 'edge_color': '#beaed4', 'mile': 8}}, {'data': {'source': 136, 'target': 'fake_node_145', 'fake': 1, 'edge_color': '#beaed4', 'mile': 8}}, {'data': {'source': 'fake_node_145', 'target': 145, 'edge_name': 1.0, 'edge_color': '#beaed4', 'mile': 8}}, {'data': {'source': 136, 'target': 'fake_node_146', 'fake': 1, 'edge_color': '#beaed4', 'mile': 8}}, {'data': {'source': 'fake_node_146', 'target': 146, 'edge_name': 1.0, 'edge_color': '#beaed4', 'mile': 8}}]},
+
+  layout: layoutOptions,
+
+  ready: function(){
+    window.cy = this;
+  }
+});
+
+function addQtips() {
+    cy.filter(function(ele, i, eles) {
+        return ele.isNode() && ele.data('tooltip') !== undefined;
+    } ).qtip({
+        content: function(){
+                return '<br><div style="overflow: auto;"><span style="white-space:nowrap;">'
+                + this.data('tooltip') + '</span></div>' + '<br>id: ' + this.data('node_root_id')
+                + '<br>dist. to root: ' + this.data('node_root_date');
+            },
+        show: {event: 'mouseover'},
+        hide: {event: 'mouseout'},
+        style: {
+                classes: 'qtip-bootstrap',
+        },
+        position: {
+            at: 'center center',
+        }
+    });
+}
+
+cy.minZoom(.001);
+cy.maxZoom(20);
+addQtips();
+
+
+function toImage(){
+    document.getElementById("downloader").href = cy.jpg({ full: false, quality: 1.0, scale: 2}).replace(/^data:image\/[^;]/, 'data:application/octet-stream');
+}
+
+function saveAsSvg() {
+    var svgContent = cy.svg({scale: 1, full: true});
+    var blob = new Blob([svgContent], {type:"image/svg+xml;charset=utf-8"});
+    document.getElementById("downloader_svg").href = URL.createObjectURL(blob);
+}
+
+function fit() {
+    cy.fit();
+}
+
+function resetLayout() {
+    cy.startBatch();
+    cy.layout(layoutOptions).run();
+
+    if (slider !== null) {
+        var cur_dist_attr = 'edge_name_' + slider.value;
+        var initial_dist_attr = 'edge_name_' + slider.max;
+        var cur_dist, initial_dist, mile;
+
+        if (removed !== undefined) {
+            removed.forEach(function( ele ) {
+                if (ele.isEdge()) {
+                    ele.target().position('x', ele.target().data('node_x'));
+                    ele.target().position('y', ele.target().data('node_y'));
+
+                    // the targets of hidden nodes might need to be moved to the last visible position for LTT timeline
+                    if (ele.data(initial_dist_attr) !== undefined) {
+                        mile = ele.target().data('mile');
+                        if (mile !== undefined) {
+                            initial_dist = ele.data(initial_dist_attr);
+                            cur_dist = ele.data('edge_name_' + mile);
+                            ele.target().position('y', (ele.source().position('y') +
+                            cur_dist * (ele.target().position('y') - ele.source().position('y')) / initial_dist));
+                        }
+                    }
+                }
+            });
+        }
+
+        cy.edges().forEach(function( ele ) {
+            cur_dist = ele.data(cur_dist_attr);
+            initial_dist = ele.data(initial_dist_attr);
+            if (cur_dist !== undefined && cur_dist != initial_dist) {
+                ele.target().position('y', (ele.source().position('y') +
+                cur_dist * (ele.target().position('y') - ele.source().position('y')) / initial_dist));
+            }
+        });
+    }
+    cy.endBatch();
+}
+
+var years = ['2', '7', '8', '9', '10', '11', '12', '13', '14'];
+var slider = document.getElementById("myRange");
+if (slider !== null) {
+    var output = document.getElementById("demo");
+    output.innerHTML = years[slider.value]; // Display the default slider value
+
+    // Update the current slider value (each time you drag the slider handle)
+    var removed = cy.collection();
+
+    slider.oninput = function() {
+        output.innerHTML = years[this.value];
+
+        cy.startBatch();
+
+        removed.restore();
+        removed = cy.remove("[mile>" + this.value + "]");
+
+        var cur_dist_attr = 'edge_name_' + this.value;
+        var initial_dist_attr = 'edge_name_' + this.max;
+        var old_dist, cur_dist;
+
+        cy.edges().forEach(function( ele ){
+            old_dist = ele.data('edge_name');
+            cur_dist = ele.data(cur_dist_attr);
+            if (cur_dist !== undefined && cur_dist != old_dist) {
+                if (ele.data(initial_dist_attr) != cur_dist) {
+                    ele.target().data('hidden', 1);
+                } else {
+                    ele.target().data('hidden', 0);
+                    console.log(ele.target().data());
+                }
+                ele.target().position('y', (ele.source().position('y')
+                + cur_dist * (ele.target().position('y') - ele.source().position('y')) / old_dist));
+                ele.data('edge_name', cur_dist);
+            }
+        });
+        cy.endBatch();
+    }
+}
+
+function toggleFullScreen() {
+  var elem = document.getElementById("fullscreenDiv");
+  if ((document.fullScreenElement && document.fullScreenElement !== null) ||
+   (!document.mozFullScreen && !document.webkitIsFullScreen)) {
+    if (elem.requestFullScreen) {
+      elem.requestFullScreen();
+    } else if (elem.mozRequestFullScreen) {
+      elem.mozRequestFullScreen();
+    } else if (elem.webkitRequestFullScreen) {
+      elem.webkitRequestFullScreen(Element.ALLOW_KEYBOARD_INPUT);
+    }
+    document.getElementById("fsspan").className = "glyphicon glyphicon-resize-small"
+    document.getElementById("fstext").innerHTML = "  Exit full screen"
+  } else {
+    if (document.cancelFullScreen) {
+      document.cancelFullScreen();
+    } else if (document.mozCancelFullScreen) {
+      document.mozCancelFullScreen();
+    } else if (document.webkitCancelFullScreen) {
+      document.webkitCancelFullScreen();
+    }
+    document.getElementById("fsspan").className = "glyphicon glyphicon-fullscreen"
+    document.getElementById("fstext").innerHTML = "  Full screen"
+  }
+}</script>
+</body>
+</html>

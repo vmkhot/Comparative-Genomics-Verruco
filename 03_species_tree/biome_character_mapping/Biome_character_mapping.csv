@@ -1,0 +1,75 @@
+﻿genome_name,character,ncbi_isolation_source
+g0000,,none
+g0001,,none
+g0002,Hot Spring,algal mat from Kah-nee-tah hot spring
+g0003,,none
+g0004,Marine,macro-algae
+g0006,Marine,groundwater filtered through a a 3.0 um filter and then through a 0.2 um filter
+g0007,Marine,saline water (ENVO:00002010); including plankton (ENVO:xxxxxxxx)
+g0008,Marine,saline water (ENVO:00002010); including plankton (ENVO:xxxxxxxx)
+g0009,Soda Lake,hypersaline soda lake sediment
+g0010,Soda Lake,hypersaline soda lake sediment
+g0011,Soda Lake,hypersaline soda lake sediment
+g0012,Soda Lake,hypersaline soda lake sediment
+g0013,Soda Lake,hypersaline soda lake sediment
+g0014,Soda Lake,hypersaline soda lake sediment
+g0015,Soda Lake,hypersaline soda lake sediment
+g0016,Soda Lake,alkaline salt lake
+g0017,Soda Lake,alkaline salt lake
+g0018,Marine,sediment
+g0019,Hot Spring,red biofilm from hot lake
+g0020,Marine,ocean water from marine abyssalpelagic zone
+g0021,Marine,sea water
+g0022,Marine,China: Weihai
+g0023,Freshwater,freshwater lake
+g0024,Gut,activated sludge
+g0025,Marine,hypoxic seawater
+g0026,Marine,hypoxic seawater
+g0027,Soil,Rock nearby Barbacenia macrantha specimens
+g0028,,biofilm from sulfidic cave
+g0029,Soda Lake,bioreactors innoculated with microbial mats from alkaline soda lake
+g0030,Soda Lake,bioreactors innoculated with microbial mats from alkaline soda lake
+g0031,Soda Lake,bioreactors innoculated with microbial mats from alkaline soda lake
+g0032,Gut,Partial nitritation anammox bioreactor
+g0033,Marine,subsea tunnel biofilm collected in 2016; 2017; 2019 and 2020
+g0034,Marine,subsea tunnel biofilm collected in 2016; 2017; 2019 and 2020
+g0035,Soda Lake,bioreactors innoculated with microbial mats from alkaline soda lake
+g0036,Soda Lake,bioreactors innoculated with microbial mats from alkaline soda lake
+g0037,Marine,sponge tissue
+g0038,Hot Spring,alkaline hot spring water
+g0039,Marine,mangrove sediment
+g0040,Marine,Caspian sea 150 m depth
+g0041,Marine,Coral skeleton
+g0042,Marine,Coral skeleton
+g0043,Marine,marine water
+g0044,Gut,mesophilic anaerobic digester
+g0051,Gut,termite gut
+g0053,Gut,human gut
+g0054,Freshwater,lake water
+g0055,Marine,marine metagenome
+g0056,Marine,marine metagenome
+g0057,Marine,marine metagenome
+g0058,Gut,human feces
+g0059,Gut,human feces
+g0061,,food production metagenome
+g0062,Marine,marine metagenome
+g0063,Freshwater,Freshwater lake
+g0064,Soda Lake,
+g990065,Marine,sediment
+g990066,Marine,saline water including plankton
+g990067,Marine,sediment from intertidal zone
+g990068,,fermenter
+g990069,Freshwater,lake water column
+g990070,Gut,Laboratory-scale bioreactor
+g990071,Marine,Caspian sea 150 m depth
+g990072,Soil,burned soil
+g990073,Marine,biofloc rearing seawater
+g990074,,none
+g990075,Freshwater,lake water
+g990076,Marine,marine metagenome
+g990077,Marine,marine water
+g990078,Gut,chicken caecal content
+g990079,Freshwater,Freshwater lake
+g990080,Gut,fish gut metagenome
+g990081,Gut,metagenome
+g990082,Gut,human feces metagenome

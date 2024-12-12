@@ -1,0 +1,24 @@
+parameter	value
+pastml_version	1.9.34
+character	character
+log_likelihood	-67.10683831713219
+log_likelihood_restricted_JOINT	-76.32744012870036
+log_likelihood_restricted_MAP	-77.07374462653158
+log_likelihood_restricted_MPPA	-70.8313117889697
+method	MPPA
+model	F81
+num_nodes	147
+num_scenarios	276480
+num_states_per_node_avg	1.1428571428571428
+num_tips	74
+num_unresolved_nodes	15
+percentage_of_unresolved_nodes	10.204081632653061
+scaling_factor	0.1529253509479089
+smoothing_factor	0
+state_changes_per_avg_branch	0.1529253509479089
+Freshwater	0.12355636684916045
+Gut	0.20115711049752696
+Hot Spring	0.05935258847676338
+Marine	0.4050563969959121
+Soda Lake	0.17107493512180152
+Soil	0.03980260205883558
