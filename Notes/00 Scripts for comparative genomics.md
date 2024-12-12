@@ -599,7 +599,7 @@ parallel "apptainer exec -B /work/ebg_lab/eb/ ~/data/Programs/alesuite_latest.si
 
 # 05 Further analyses
 
-get_gene_events_all_nodes.py
+[get_gene_events_all_nodes.py](05_results_analyses/get_gene_events_all_nodes.py)
 
 ```python
 ## This script will get gene family events at all nodes (including the leaves) and output both with and without the cutoff
@@ -671,7 +671,7 @@ if __name__ == "__main__":
     main()
 ```
 
-[gene_enrichment_stats.py]()
+[gene_enrichment_stats.py](05_results_analyses/gene_enrichment_stats.py)
 
 To get genes enriched in alkaline nodes
 
